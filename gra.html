@@ -92,17 +92,17 @@
             pointer-events: none;
         }
 
-        /* Kolorowy Tytuł - DUŻY NA CAŁY EKRAN */
+        /* Kolorowy Tytuł - NA GÓRZE EKRANU */
         h1.title {
-            font-size: 5rem;
+            font-size: 4rem;
             text-align: center;
             margin: 0;
             line-height: 1.1;
             text-shadow: 3px 3px 0px rgba(0,0,0,0.1);
             position: absolute;
-            top: 50%;
+            top: 5%;
             left: 50%;
-            transform: translate(-50%, -50%);
+            transform: translateX(-50%);
             width: 90%;
             font-weight: bold;
             letter-spacing: 0.05em;
@@ -228,42 +228,115 @@
 
         /* --- Ekran Gry --- */
         #game-screen {
-            background-color: #E1F5FE;
+            background: linear-gradient(135deg, #E1F5FE 0%, #B3E5FC 100%);
+        }
+
+        /* Pasek Gwiazdek na górze */
+        .stars-header {
+            position: absolute;
+            top: 10px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: linear-gradient(135deg, #FFD700, #FFA500);
+            padding: 10px 30px;
+            border-radius: 50px;
+            box-shadow: 0 4px 15px rgba(255, 215, 0, 0.4);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            z-index: 20;
+            border: 3px solid #FF8C00;
+        }
+
+        .star {
+            font-size: 2rem;
+            filter: drop-shadow(0 2px 4px rgba(0,0,0,0.2));
+        }
+
+        .star.filled {
+            color: #FFD700;
+            animation: starPop 0.5s ease-out;
+        }
+
+        .star.empty {
+            color: #DDD;
+        }
+
+        @keyframes starPop {
+            0% { transform: scale(0); }
+            50% { transform: scale(1.3); }
+            100% { transform: scale(1); }
         }
 
         .game-card {
-            background: var(--card-bg);
+            background: linear-gradient(135deg, #FFFFFF 0%, #F0F9FF 100%);
             width: 90%;
-            max-height: 95vh;
+            max-height: 85vh;
             overflow-y: auto;
-            border-radius: 20px;
-            padding: 20px;
-            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+            border-radius: 30px;
+            padding: 25px;
+            margin-top: 70px;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.15), 0 5px 15px rgba(33, 150, 243, 0.2);
             text-align: center;
-            border: 4px solid var(--accent-blue);
+            border: 5px solid transparent;
+            background-clip: padding-box;
+            position: relative;
             display: flex;
             flex-direction: column;
             align-items: center;
-            box-sizing: border-box; /* Ważne dla responsywności */
+            box-sizing: border-box;
+        }
+
+        .game-card::before {
+            content: '';
+            position: absolute;
+            top: -5px;
+            left: -5px;
+            right: -5px;
+            bottom: -5px;
+            background: linear-gradient(135deg, #FF6B6B, #4ECDC4, #45B7D1, #FFA07A);
+            border-radius: 30px;
+            z-index: -1;
         }
 
         .level-badge {
-            background-color: #FF9800;
+            background: linear-gradient(135deg, #FF6B6B, #FF8E53);
             color: white;
-            padding: 5px 15px;
-            border-radius: 15px;
+            padding: 10px 25px;
+            border-radius: 25px;
             display: inline-block;
-            margin-bottom: 10px;
+            margin-bottom: 15px;
             font-weight: bold;
-            font-size: 1rem;
+            font-size: 1.1rem;
+            box-shadow: 0 4px 10px rgba(255, 107, 107, 0.3);
+            border: 3px solid #FF4757;
+            position: relative;
+        }
+
+        .level-badge::before {
+            content: '🎯 ';
+            margin-right: 5px;
         }
 
         .riddle-text {
-            font-size: 1.3rem;
-            color: #333;
-            margin-bottom: 20px;
-            line-height: 1.3;
+            font-size: 1.4rem;
+            color: #2C3E50;
+            margin-bottom: 25px;
+            line-height: 1.5;
             font-weight: bold;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            padding: 10px;
+            position: relative;
+        }
+
+        .riddle-text::before {
+            content: '🤔';
+            position: absolute;
+            left: -35px;
+            font-size: 1.8rem;
         }
 
         .answers-grid {
@@ -275,35 +348,93 @@
         }
 
         .answer-btn {
-            background-color: #FFF;
-            border: 3px solid #DDD;
-            border-radius: 15px;
-            padding: 12px;
-            font-size: 1.1rem;
+            background: linear-gradient(135deg, #FFFFFF, #F0F4FF);
+            border: 4px solid #B8C5FF;
+            border-radius: 20px;
+            padding: 15px 20px;
+            font-size: 1.15rem;
             font-family: inherit;
             cursor: pointer;
-            transition: transform 0.2s, background-color 0.2s;
-            color: #444;
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            color: #2C3E50;
             font-weight: bold;
             text-align: center;
-            width: 100%; /* Pełna szerokość w kontenerze */
+            width: 100%;
             box-sizing: border-box;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .answer-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.5), transparent);
+            transition: left 0.5s;
+        }
+
+        .answer-btn:hover::before {
+            left: 100%;
+        }
+
+        .answer-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+            border-color: #7C8FFF;
         }
 
         .answer-btn:active {
-            transform: scale(0.98);
+            transform: scale(0.98) translateY(-1px);
         }
 
         .correct {
-            background-color: #81C784 !important;
+            background: linear-gradient(135deg, #4CAF50, #81C784) !important;
             border-color: #2E7D32 !important;
             color: white !important;
+            animation: correctBounce 0.6s ease-out;
+        }
+
+        .correct::after {
+            content: '✓';
+            position: absolute;
+            right: 15px;
+            font-size: 1.5rem;
+            animation: checkmarkSlide 0.5s ease-out;
+        }
+
+        @keyframes correctBounce {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+
+        @keyframes checkmarkSlide {
+            0% { transform: translateX(30px); opacity: 0; }
+            100% { transform: translateX(0); opacity: 1; }
         }
 
         .wrong {
-            background-color: #E57373 !important;
+            background: linear-gradient(135deg, #EF5350, #E57373) !important;
             border-color: #C62828 !important;
             color: white !important;
+            animation: wrongShake 0.5s ease-out;
+        }
+
+        .wrong::after {
+            content: '✗';
+            position: absolute;
+            right: 15px;
+            font-size: 1.5rem;
+        }
+
+        @keyframes wrongShake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-10px); }
+            75% { transform: translateX(10px); }
         }
 
         /* --- Kontener i style dla obrazka (Zaktualizowane) --- */
@@ -346,37 +477,71 @@
             z-index: 100;
         }
         .modal-content {
-            background: white;
-            padding: 30px;
-            border-radius: 20px;
+            background: linear-gradient(135deg, #FFF 0%, #FFF8DC 100%);
+            padding: 35px;
+            border-radius: 30px;
             text-align: center;
             animation: pop 0.4s ease-out;
-            border: 5px solid #FFEB3B;
-            width: 80%;
-            max-width: 300px;
+            border: 6px solid transparent;
+            background-clip: padding-box;
+            position: relative;
+            width: 85%;
+            max-width: 320px;
             box-sizing: border-box;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.3);
         }
+
+        .modal-content::before {
+            content: '';
+            position: absolute;
+            top: -6px;
+            left: -6px;
+            right: -6px;
+            bottom: -6px;
+            background: linear-gradient(135deg, #FFD700, #FF8C00, #FFD700);
+            border-radius: 30px;
+            z-index: -1;
+            animation: borderGlow 2s infinite;
+        }
+
+        @keyframes borderGlow {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.7; }
+        }
+
+        .modal-content h2 {
+            font-size: 2rem;
+            margin-bottom: 10px;
+        }
+
         .modal-btn {
-            background: #4CAF50;
+            background: linear-gradient(135deg, #4CAF50, #66BB6A);
             color: white;
             border: none;
-            padding: 10px 30px;
-            font-size: 1.2rem;
+            padding: 12px 40px;
+            font-size: 1.3rem;
             border-radius: 50px;
-            margin-top: 15px;
+            margin-top: 20px;
             cursor: pointer;
             font-family: inherit;
-            box-shadow: 0 4px 0 #2E7D32;
+            box-shadow: 0 6px 0 #2E7D32, 0 8px 15px rgba(0,0,0,0.2);
+            transition: all 0.2s;
+            font-weight: bold;
+        }
+        .modal-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 0 #2E7D32, 0 10px 20px rgba(0,0,0,0.25);
         }
         .modal-btn:active {
-            box-shadow: none;
+            box-shadow: 0 2px 0 #2E7D32;
             transform: translateY(4px);
         }
 
         /* --- MEDIA QUERIES (DODATKOWA RESPONSYWNOŚĆ DLA MAŁYCH EKRANÓW) --- */
         @media (max-width: 480px) {
             h1.title {
-                font-size: 3rem; /* Mniejszy tytuł na telefonie */
+                font-size: 2.5rem; /* Mniejszy tytuł na telefonie */
+                top: 3%;
             }
 
             #play-btn {
@@ -401,19 +566,34 @@
                 bottom: 5%;
             }
 
+            .stars-header {
+                top: 5px;
+                padding: 8px 20px;
+            }
+
+            .star {
+                font-size: 1.5rem;
+            }
+
             /* Karta gry szersza na małym ekranie */
             .game-card {
                 width: 95%;
                 padding: 15px;
+                margin-top: 55px;
             }
 
             .riddle-text {
-                font-size: 1.15rem;
+                font-size: 1.2rem;
+            }
+
+            .riddle-text::before {
+                left: -30px;
+                font-size: 1.5rem;
             }
 
             .answer-btn {
-                padding: 10px;
-                font-size: 1rem;
+                padding: 12px 15px;
+                font-size: 1.05rem;
             }
         }
 
@@ -522,9 +702,14 @@
 
         <!-- GAME SCREEN -->
         <div id="game-screen" class="screen hidden">
+            <!-- Pasek Gwiazdek -->
+            <div class="stars-header" id="stars-container">
+                <!-- Gwiazdki będą generowane przez JavaScript -->
+            </div>
+
             <div class="game-card">
                 <div class="level-badge" id="level-indicator">Zadanie 1</div>
-                
+
                 <div class="riddle-text" id="question-text">
                     <!-- Treść pytania -->
                 </div>
@@ -585,6 +770,8 @@
         ];
 
         let currentLevel = 0;
+        let stars = 0; // Liczba zdobytych gwiazdek
+        const totalLevels = gameData.length;
 
         /* --- Service Worker Registration --- */
         if ('serviceWorker' in navigator) {
@@ -645,8 +832,32 @@
         playBtn.addEventListener('click', () => {
             splashScreen.classList.add('hidden');
             gameScreen.classList.remove('hidden');
+            initStars();
             loadLevel(currentLevel);
         });
+
+        // Inicjalizacja gwiazdek
+        function initStars() {
+            const starsContainer = document.getElementById('stars-container');
+            starsContainer.innerHTML = '';
+            for (let i = 0; i < totalLevels; i++) {
+                const star = document.createElement('span');
+                star.className = 'star empty';
+                star.innerHTML = '⭐';
+                star.id = `star-${i}`;
+                starsContainer.appendChild(star);
+            }
+        }
+
+        // Dodawanie gwiazdki
+        function addStar() {
+            const star = document.getElementById(`star-${stars}`);
+            if (star) {
+                star.classList.remove('empty');
+                star.classList.add('filled');
+                stars++;
+            }
+        }
 
         /* --- LOGIKA GRY --- */
         const questionText = document.getElementById('question-text');
@@ -661,17 +872,38 @@
 
         function loadLevel(index) {
             if (index >= gameData.length) {
-                // Koniec gry
-                questionText.textContent = "Gratulacje! Ukończyłeś wszystkie zagadki!";
+                // Koniec gry - pokaż wynik
+                levelIndicator.textContent = "🎊 GRATULACJE! 🎊";
+                levelIndicator.style.fontSize = '1.3rem';
+                levelIndicator.style.background = 'linear-gradient(135deg, #FFD700, #FFA500)';
+
+                questionText.innerHTML = `
+                    <div style="font-size: 2rem; margin: 20px 0;">🌟 WYNIK KOŃCOWY 🌟</div>
+                    <div style="font-size: 1.5rem;">Zdobyłeś <span style="color: #FFD700; font-size: 2rem;">${stars}/${totalLevels}</span> gwiazdek!</div>
+                `;
+                questionText.style.background = 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)';
+
                 answersContainer.innerHTML = '';
-                levelIndicator.textContent = "Koniec Gry";
-                imageScene.innerHTML = ''; // Wyczyść obrazek
-                
+                imageScene.innerHTML = '';
+
+                // Duży komunikat gratulacyjny
+                const congratsMsg = document.createElement('div');
+                congratsMsg.style.cssText = 'font-size: 1.8rem; color: #FF6B6B; margin: 20px 0; font-weight: bold;';
+                congratsMsg.innerHTML = stars === totalLevels
+                    ? '🏆 PERFEKCYJNIE! Jesteś mistrzem zagadek! 🏆'
+                    : '🎉 Świetna robota! Jesteś super! 🎉';
+                answersContainer.appendChild(congratsMsg);
+
                 const restartBtn = document.createElement('button');
                 restartBtn.className = 'answer-btn';
-                restartBtn.style.gridColumn = "1 / span 2";
-                restartBtn.style.background = "#FFEB3B";
-                restartBtn.textContent = "Zagraj jeszcze raz";
+                restartBtn.style.cssText = `
+                    background: linear-gradient(135deg, #FFD700, #FFA500);
+                    border-color: #FF8C00;
+                    font-size: 1.3rem;
+                    padding: 18px 30px;
+                    margin-top: 20px;
+                `;
+                restartBtn.innerHTML = "🔄 Zagraj jeszcze raz";
                 restartBtn.onclick = () => location.reload();
                 answersContainer.appendChild(restartBtn);
                 return;
@@ -707,7 +939,8 @@
 
             if (selectedIndex === correctIndex) {
                 btnElement.classList.add('correct');
-                setTimeout(() => showModal(true), 500);
+                addStar(); // Dodaj gwiazdkę za poprawną odpowiedź!
+                setTimeout(() => showModal(true), 700);
             } else {
                 btnElement.classList.add('wrong');
                 allBtns[correctIndex].classList.add('correct');
@@ -715,16 +948,33 @@
             }
         }
 
+        const successMessages = [
+            { title: "🎉 Super!", msg: "Jesteś prawdziwym mistrzem zagadek!" },
+            { title: "🌟 Wspaniale!", msg: "Świetnie myślisz!" },
+            { title: "🏆 Brawo!", msg: "Fantastyczna robota!" },
+            { title: "✨ Cudownie!", msg: "Jesteś niesamowity!" },
+            { title: "🎊 Wow!", msg: "Doskonała odpowiedź!" }
+        ];
+
+        const failMessages = [
+            { title: "😊 Prawie!", msg: "Spróbuj jeszcze raz, na pewno dasz radę!" },
+            { title: "💪 Nie poddawaj się!", msg: "Następnym razem będzie lepiej!" },
+            { title: "🤗 Nic się nie stało!", msg: "Każdy może się pomylić!" },
+            { title: "💡 Spróbuj ponownie!", msg: "Zastanów się chwilkę dłużej!" }
+        ];
+
         function showModal(isSuccess) {
             modal.classList.remove('hidden');
             if (isSuccess) {
-                modalTitle.textContent = "Brawo!";
+                const msg = successMessages[Math.floor(Math.random() * successMessages.length)];
+                modalTitle.textContent = msg.title;
                 modalTitle.style.color = "#4CAF50";
-                modalMsg.textContent = "Kotkowi udało się bezpiecznie przejść!";
+                modalMsg.textContent = msg.msg;
             } else {
-                modalTitle.textContent = "Ups...";
-                modalTitle.style.color = "#F44336";
-                modalMsg.textContent = "Bezpieczniej będzie spróbować jeszcze raz!";
+                const msg = failMessages[Math.floor(Math.random() * failMessages.length)];
+                modalTitle.textContent = msg.title;
+                modalTitle.style.color = "#FF9800";
+                modalMsg.textContent = msg.msg;
             }
         }
 
