@@ -2,14 +2,25 @@
 <html lang="pl">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Muzgozrozumienie</title>
-    
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <title>My 2Go 2Rozumienie</title>
+    <meta name="description" content="Gra edukacyjna dla dzieci - zagadki logiczne">
+
+    <!-- PWA Manifest -->
+    <link rel="manifest" href="/manifest.json">
+
     <!-- Meta tagi dla PWA / Wyglądu mobilnego -->
     <meta name="theme-color" content="#4FC3F7">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="My2Go2R">
     <meta name="mobile-web-app-capable" content="yes">
+
+    <!-- Apple Touch Icons -->
+    <link rel="apple-touch-icon" href="/icon.svg">
+    <link rel="icon" type="image/svg+xml" href="/icon.svg">
+    <link rel="icon" type="image/png" sizes="192x192" href="/icon.svg">
+    <link rel="icon" type="image/png" sizes="512x512" href="/icon.svg">
 
     <style>
         /* --- Style Ogólne --- */
@@ -28,6 +39,7 @@
             padding: 0;
             width: 100%;
             height: 100%;
+            min-height: -webkit-fill-available; /* iOS Safari fix */
             font-family: 'Comic Sans MS', 'Chalkboard SE', sans-serif;
             background-color: var(--primary-bg);
             overflow: hidden;
@@ -35,6 +47,9 @@
             justify-content: center;
             align-items: center;
             user-select: none;
+            -webkit-user-select: none;
+            -webkit-touch-callout: none;
+            touch-action: manipulation; /* Disable double-tap zoom */
         }
 
         #app {
@@ -46,6 +61,12 @@
             flex-direction: column;
             align-items: center;
             justify-content: center;
+            /* Safe area insets for devices with notches */
+            padding-left: env(safe-area-inset-left);
+            padding-right: env(safe-area-inset-right);
+            padding-top: env(safe-area-inset-top);
+            padding-bottom: env(safe-area-inset-bottom);
+            box-sizing: border-box;
         }
 
         /* --- Ekran Powitalny (Splash Screen) --- */
@@ -77,21 +98,35 @@
             text-align: center;
             margin-bottom: 30px;
             margin-top: 0;
-            line-height: 1.1;
+            line-height: 1.2;
             text-shadow: 3px 3px 0px rgba(0,0,0,0.1);
             position: absolute;
             top: 10%;
             width: 100%;
-            padding: 0 10px; /* Margines na małe ekrany */
+            padding: 0 10px;
             box-sizing: border-box;
+            font-weight: bold;
         }
-        
-        .letter:nth-child(1n) { color: #F44336; }
-        .letter:nth-child(2n) { color: #FF9800; }
-        .letter:nth-child(3n) { color: #FFEB3B; text-shadow: 1px 1px 0 #AAA; }
-        .letter:nth-child(4n) { color: #4CAF50; }
-        .letter:nth-child(5n) { color: #2196F3; }
-        .letter:nth-child(6n) { color: #9C27B0; }
+
+        /* Kolory liter - zgodnie z rysunkiem */
+        .letter:nth-child(1) { color: #4CAF50; }  /* M - zielony */
+        .letter:nth-child(2) { color: #FF9800; }  /* y - pomarańczowy */
+        .letter:nth-child(3) { color: #333; }     /* spacja */
+        .letter:nth-child(4) { color: #E91E63; }  /* 2 - różowy */
+        .letter:nth-child(5) { color: #9C27B0; }  /* G - fioletowy */
+        .letter:nth-child(6) { color: #2196F3; }  /* o - niebieski */
+        .letter:nth-child(7) { color: #333; }     /* spacja */
+        .letter:nth-child(8) { color: #2196F3; }  /* 2 - niebieski */
+        .letter:nth-child(9) { color: #9C27B0; }  /* R - fioletowy */
+        .letter:nth-child(10) { color: #E91E63; } /* o - różowy */
+        .letter:nth-child(11) { color: #FFEB3B; text-shadow: 1px 1px 0 #AAA; } /* z - żółty */
+        .letter:nth-child(12) { color: #FF9800; } /* u - pomarańczowy */
+        .letter:nth-child(13) { color: #4CAF50; } /* m - zielony */
+        .letter:nth-child(14) { color: #F44336; } /* i - czerwony */
+        .letter:nth-child(15) { color: #FFEB3B; text-shadow: 1px 1px 0 #AAA; } /* e - żółty */
+        .letter:nth-child(16) { color: #2196F3; } /* n - niebieski */
+        .letter:nth-child(17) { color: #9C27B0; } /* i - fioletowy */
+        .letter:nth-child(18) { color: #E91E63; } /* e - różowy */
 
         /* Przycisk Play - Ikona */
         #play-btn {
@@ -355,7 +390,7 @@
 
             /* Karta gry szersza na małym ekranie */
             .game-card {
-                width: 95%; 
+                width: 95%;
                 padding: 15px;
             }
 
@@ -369,6 +404,76 @@
             }
         }
 
+        /* Landscape mode - smaller devices */
+        @media (max-height: 600px) and (orientation: landscape) {
+            h1.title {
+                font-size: 2rem;
+                top: 2%;
+            }
+
+            #play-btn {
+                width: 60px;
+                height: 60px;
+                margin-bottom: 20px;
+            }
+
+            #play-btn svg {
+                width: 30px;
+                height: 30px;
+            }
+
+            .loader-wrapper {
+                bottom: 10%;
+            }
+
+            .game-card {
+                max-height: 90vh;
+                padding: 10px;
+            }
+
+            .riddle-text {
+                font-size: 1rem;
+                margin-bottom: 10px;
+            }
+
+            .answer-btn {
+                padding: 8px;
+                font-size: 0.95rem;
+            }
+        }
+
+        /* Very small screens */
+        @media (max-width: 360px) {
+            h1.title {
+                font-size: 2rem;
+            }
+
+            .riddle-text {
+                font-size: 1rem;
+            }
+
+            .answer-btn {
+                font-size: 0.9rem;
+                padding: 8px;
+            }
+        }
+
+        /* Ensure touch targets are at least 44x44px (Apple HIG) */
+        @media (pointer: coarse) {
+            .answer-btn {
+                min-height: 44px;
+            }
+
+            #play-btn {
+                min-width: 44px;
+                min-height: 44px;
+            }
+
+            .modal-btn {
+                min-height: 44px;
+            }
+        }
+
     </style>
 </head>
 <body>
@@ -377,7 +482,7 @@
         <!-- SPLASH SCREEN -->
         <div id="splash-screen" class="screen">
             <h1 class="title" id="colorful-title">
-                MUZGOZROZUMIENIE
+                <!-- Title will be generated by JavaScript -->
             </h1>
 
             <button id="play-btn" disabled aria-label="Graj">
@@ -464,8 +569,17 @@
 
         let currentLevel = 0;
 
+        /* --- Service Worker Registration --- */
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('/sw.js')
+                    .then(reg => console.log('Service Worker zarejestrowany:', reg.scope))
+                    .catch(err => console.log('Błąd rejestracji Service Worker:', err));
+            });
+        }
+
         /* --- LOGIKA UI (Splash Screen) --- */
-        const titleText = "MUZGOZROZUMIENIE";
+        const titleText = "My 2Go 2Rozumienie";
         const titleContainer = document.getElementById('colorful-title');
         const loaderBar = document.getElementById('loader-bar');
         const heartIcon = document.getElementById('heart-icon');

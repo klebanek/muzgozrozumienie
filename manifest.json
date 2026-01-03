@@ -1,0 +1,29 @@
+{
+  "name": "My 2Go 2Rozumienie",
+  "short_name": "My2Go2R",
+  "description": "Gra edukacyjna dla dzieci - zagadki logiczne",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#E1F5FE",
+  "theme_color": "#4FC3F7",
+  "orientation": "portrait-primary",
+  "scope": "/",
+  "lang": "pl",
+  "icons": [
+    {
+      "src": "icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ],
+  "screenshots": [
+    {
+      "src": "screenshot.png",
+      "sizes": "540x720",
+      "type": "image/png"
+    }
+  ],
+  "categories": ["education", "games"],
+  "prefer_related_applications": false
+}
