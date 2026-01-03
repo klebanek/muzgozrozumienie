@@ -22,6 +22,9 @@
     <link rel="icon" type="image/png" sizes="192x192" href="/icon.svg">
     <link rel="icon" type="image/png" sizes="512x512" href="/icon.svg">
 
+    <!-- Confetti Library -->
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+
     <style>
         /* --- Style Ogólne --- */
         :root {
@@ -973,6 +976,38 @@
             }
         }
 
+        // Funkcja confetti (efekt konfetti)
+        function launchConfetti() {
+            if (typeof confetti === 'function') {
+                // Pierwsze confetti
+                confetti({
+                    particleCount: 100,
+                    spread: 70,
+                    origin: { y: 0.6 }
+                });
+
+                // Drugie confetti po chwili
+                setTimeout(() => {
+                    confetti({
+                        particleCount: 50,
+                        angle: 60,
+                        spread: 55,
+                        origin: { x: 0 }
+                    });
+                }, 250);
+
+                // Trzecie confetti z drugiej strony
+                setTimeout(() => {
+                    confetti({
+                        particleCount: 50,
+                        angle: 120,
+                        spread: 55,
+                        origin: { x: 1 }
+                    });
+                }, 400);
+            }
+        }
+
         /* --- Service Worker Registration --- */
         if ('serviceWorker' in navigator) {
             window.addEventListener('load', () => {
@@ -1208,10 +1243,11 @@
             const currentStars = levelStars[currentGameLevel] || 0;
             const passed = currentStars >= 4;
 
-            // Odtwórz dźwięk i wibrację ukończenia poziomu
+            // Odtwórz dźwięk, wibrację i confetti przy ukończeniu poziomu
             if (passed) {
                 playSound('complete');
                 vibrate([200, 100, 200, 100, 200]); // Wibracja sukcesu
+                launchConfetti(); // Efekt confetti!
             }
 
             levelIndicator.textContent = passed ? "🎊 GRATULACJE! 🎊" : "😊 Koniec poziomu";
