@@ -1234,6 +1234,13 @@
     </div>
 
     <script>
+        // Funkcja wibracji (dla urządzeń mobilnych) - MUSI BYĆ NA POCZĄTKU
+        function vibrate(pattern) {
+            if (navigator.vibrate) {
+                navigator.vibrate(pattern);
+            }
+        }
+
         /* --- AVATAR CREATOR LOGIC --- */
         const avatars = [
             { emoji: '🐱', name: 'Kotek' },
@@ -1314,11 +1321,7 @@
             }, 150);
 
             // Wibracja przy wyborze
-            if (typeof vibrate === 'function') {
-                vibrate(50);
-            } else if (navigator.vibrate) {
-                navigator.vibrate(50);
-            }
+            vibrate(50);
 
             // Odznacz wszystkie i zaznacz wybrany
             document.querySelectorAll('.avatar-btn').forEach((btn, i) => {
@@ -1338,9 +1341,7 @@
             localStorage.setItem('playerName', playerName);
 
             // Wibracja przy starcie
-            if (navigator.vibrate) {
-                navigator.vibrate(200);
-            }
+            vibrate(200);
 
             // Ukryj avatar screen, pokaż splash screen
             document.getElementById('avatar-screen').classList.add('hidden');
@@ -1593,13 +1594,6 @@
             if (sounds[soundName]) {
                 sounds[soundName].currentTime = 0;
                 sounds[soundName].play().catch(() => {});
-            }
-        }
-
-        // Funkcja wibracji (dla urządzeń mobilnych)
-        function vibrate(pattern) {
-            if (navigator.vibrate) {
-                navigator.vibrate(pattern);
             }
         }
 
