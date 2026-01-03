@@ -735,44 +735,87 @@
     </div>
 
     <script>
-        /* --- DANE GRY --- */
-        const gameData = [
-            {
-                // Zmienione pierwsze zadanie
-                question: "Co kotek ma zrobić, żeby przejść przez ulicę?",
-                answers: ["Po prostu przejść", "Poczekać na zielone światło", "Szukać innych pasów"],
-                correct: 1, // 'Poczekać na zielone światło' to indeks 1
-                hasImage: true // Flaga dla obrazka
+        /* --- DANE GRY - WIELOPOZIOMOWE --- */
+        const gameLevels = {
+            0: {
+                name: "Poziom Startowy",
+                emoji: "🌱",
+                questions: [
+                    {
+                        question: "Co kotek ma zrobić, żeby przejść przez ulicę?",
+                        answers: ["Po prostu przejść", "Poczekać na zielone światło", "Szukać innych pasów"],
+                        correct: 1,
+                        hasImage: true
+                    },
+                    {
+                        question: "Jaki to miesiąc, co ma 28 dni?",
+                        answers: ["Luty", "Tylko Marzec", "Każdy miesiąc", "Lipiec"],
+                        correct: 2,
+                        hasImage: false
+                    },
+                    {
+                        question: "Co rośnie do góry nogami?",
+                        answers: ["Drzewo", "Trawa", "Sopel lodu", "Kwiatek"],
+                        correct: 2,
+                        hasImage: false
+                    },
+                    {
+                        question: "Im więcej tego jest, tym mniej widzisz. Co to?",
+                        answers: ["Światło", "Mgła", "Deszcz", "Ciemność"],
+                        correct: 3,
+                        hasImage: false
+                    },
+                    {
+                        question: "Co trzeba rozbić, aby tego użyć?",
+                        answers: ["Szybę", "Jajko", "Zabawkę", "Kamień"],
+                        correct: 1,
+                        hasImage: false
+                    }
+                ]
             },
-            {
-                question: "Jaki to miesiąc, co ma 28 dni?",
-                answers: ["Luty", "Tylko Marzec", "Każdy miesiąc", "Lipiec"],
-                correct: 2,
-                hasImage: false
-            },
-            {
-                question: "Co rośnie do góry nogami?",
-                answers: ["Drzewo", "Trawa", "Sopel lodu", "Kwiatek"],
-                correct: 2,
-                hasImage: false
-            },
-            {
-                question: "Im więcej tego jest, tym mniej widzisz. Co to?",
-                answers: ["Światło", "Mgła", "Deszcz", "Ciemność"],
-                correct: 3,
-                hasImage: false
-            },
-            {
-                question: "Co trzeba rozbić, aby tego użyć?",
-                answers: ["Szybę", "Jajko", "Zabawkę", "Kamień"],
-                correct: 1,
-                hasImage: false
+            1: {
+                name: "Poziom 1 - Matematyka",
+                emoji: "🔢",
+                questions: [
+                    {
+                        question: "Ile to jest 5 + 3?",
+                        answers: ["7", "8", "9", "6"],
+                        correct: 1,
+                        hasImage: false
+                    },
+                    {
+                        question: "Ile to jest 10 - 4?",
+                        answers: ["5", "6", "7", "4"],
+                        correct: 1,
+                        hasImage: false
+                    },
+                    {
+                        question: "Masz 7 cukierków i dostajesz jeszcze 2. Ile masz razem?",
+                        answers: ["8", "9", "10", "5"],
+                        correct: 1,
+                        hasImage: false
+                    },
+                    {
+                        question: "Ile to jest 12 - 5?",
+                        answers: ["6", "7", "8", "9"],
+                        correct: 1,
+                        hasImage: false
+                    },
+                    {
+                        question: "Ile to jest 6 + 6?",
+                        answers: ["10", "11", "12", "13"],
+                        correct: 2,
+                        hasImage: false
+                    }
+                ]
             }
-        ];
+        };
 
-        let currentLevel = 0;
-        let stars = 0; // Liczba zdobytych gwiazdek
-        const totalLevels = gameData.length;
+        let currentGameLevel = 0; // Poziom gry (0 = startowy, 1 = poziom 1, itd.)
+        let currentQuestionIndex = 0; // Indeks pytania w aktualnym poziomie
+        let stars = 0; // Liczba zdobytych gwiazdek w aktualnym poziomie
+        let levelStars = {}; // Gwiazdki zdobyte na każdym poziomie
+        const totalQuestionsPerLevel = 5;
 
         /* --- Service Worker Registration --- */
         if ('serviceWorker' in navigator) {
@@ -833,20 +876,59 @@
         playBtn.addEventListener('click', () => {
             splashScreen.classList.add('hidden');
             gameScreen.classList.remove('hidden');
+            loadProgress(); // Wczytaj zapisany postęp
             initStars();
-            loadLevel(currentLevel);
+            loadQuestion();
         });
+
+        // Wczytywanie postępu z localStorage
+        function loadProgress() {
+            const saved = localStorage.getItem('muzgozrozumienie_progress');
+            if (saved) {
+                const progress = JSON.parse(saved);
+                currentGameLevel = progress.level || 0;
+                currentQuestionIndex = progress.questionIndex || 0;
+                levelStars = progress.levelStars || {};
+                stars = levelStars[currentGameLevel] || 0;
+            }
+        }
+
+        // Zapisywanie postępu do localStorage
+        function saveProgress() {
+            const progress = {
+                level: currentGameLevel,
+                questionIndex: currentQuestionIndex,
+                levelStars: levelStars
+            };
+            localStorage.setItem('muzgozrozumienie_progress', JSON.stringify(progress));
+        }
+
+        // Resetowanie postępu
+        function resetProgress() {
+            localStorage.removeItem('muzgozrozumienie_progress');
+            location.reload();
+        }
 
         // Inicjalizacja gwiazdek
         function initStars() {
             const starsContainer = document.getElementById('stars-container');
             starsContainer.innerHTML = '';
-            for (let i = 0; i < totalLevels; i++) {
+            for (let i = 0; i < totalQuestionsPerLevel; i++) {
                 const star = document.createElement('span');
                 star.className = 'star empty';
                 star.innerHTML = '⭐';
                 star.id = `star-${i}`;
                 starsContainer.appendChild(star);
+            }
+            // Wypełnij gwiazdki na podstawie zapisanego postępu
+            if (levelStars[currentGameLevel]) {
+                for (let i = 0; i < levelStars[currentGameLevel]; i++) {
+                    const star = document.getElementById(`star-${i}`);
+                    if (star) {
+                        star.classList.remove('empty');
+                        star.classList.add('filled');
+                    }
+                }
             }
         }
 
@@ -865,6 +947,8 @@
                     }, 200);
                 }, 50);
                 stars++;
+                levelStars[currentGameLevel] = stars;
+                saveProgress();
             }
         }
 
@@ -879,55 +963,30 @@
 
         // USUNIĘTO kod SVG (catStreetSvg) - teraz używamy pliku JPG
 
-        function loadLevel(index) {
-            if (index >= gameData.length) {
-                // Koniec gry - pokaż wynik
-                levelIndicator.textContent = "🎊 GRATULACJE! 🎊";
-                levelIndicator.style.fontSize = '1.3rem';
-                levelIndicator.style.background = 'linear-gradient(135deg, #FFD700, #FFA500)';
+        function loadQuestion() {
+            const currentLevel = gameLevels[currentGameLevel];
 
-                // Resetujemy style dla tekstu pytania
-                questionText.style.background = 'none';
-                questionText.style.webkitTextFillColor = 'initial';
-                questionText.innerHTML = `
-                    <div style="font-size: 2rem; margin: 20px 0; color: #667eea;">🌟 WYNIK KOŃCOWY 🌟</div>
-                    <div style="font-size: 1.5rem; color: #2C3E50;">Zdobyłeś <span style="color: #FFD700; font-size: 2rem; font-weight: bold;">${stars}/${totalLevels}</span> gwiazdek!</div>
-                `;
-
-                answersContainer.innerHTML = '';
-                imageScene.innerHTML = '';
-
-                // Duży komunikat gratulacyjny
-                const congratsMsg = document.createElement('div');
-                congratsMsg.style.cssText = 'font-size: 1.8rem; color: #FF6B6B; margin: 20px 0; font-weight: bold;';
-                congratsMsg.innerHTML = stars === totalLevels
-                    ? '🏆 PERFEKCYJNIE! Jesteś mistrzem zagadek! 🏆'
-                    : '🎉 Świetna robota! Jesteś super! 🎉';
-                answersContainer.appendChild(congratsMsg);
-
-                const restartBtn = document.createElement('button');
-                restartBtn.className = 'answer-btn';
-                restartBtn.style.cssText = `
-                    background: linear-gradient(135deg, #FFD700, #FFA500);
-                    border-color: #FF8C00;
-                    font-size: 1.3rem;
-                    padding: 18px 30px;
-                    margin-top: 20px;
-                `;
-                restartBtn.innerHTML = "🔄 Zagraj jeszcze raz";
-                restartBtn.onclick = () => location.reload();
-                answersContainer.appendChild(restartBtn);
+            if (!currentLevel) {
+                // Ukończono wszystkie poziomy
+                showFinalScreen();
                 return;
             }
 
-            const data = gameData[index];
-            levelIndicator.textContent = `Zadanie ${index + 1}`;
+            const questions = currentLevel.questions;
+
+            if (currentQuestionIndex >= questions.length) {
+                // Ukończono poziom - pokaż ekran ukończenia poziomu
+                showLevelCompletionScreen();
+                return;
+            }
+
+            const data = questions[currentQuestionIndex];
+            levelIndicator.innerHTML = `${currentLevel.emoji} ${currentLevel.name} - Zadanie ${currentQuestionIndex + 1}/5`;
             questionText.textContent = data.question;
             answersContainer.innerHTML = '';
 
-            // Obsługa obrazka - ZMIANA NA TAG IMG
-            if (data.hasImage && index === 0) {
-                // Wstawiamy tag IMG wskazujący na przesłany plik
+            // Obsługa obrazka
+            if (data.hasImage && currentGameLevel === 0 && currentQuestionIndex === 0) {
                 imageScene.innerHTML = '<img src="image_50043c.jpg" alt="Ilustracja do zadania" class="responsive-image">';
                 imageScene.style.display = 'flex';
             } else {
@@ -942,6 +1001,123 @@
                 btn.onclick = () => checkAnswer(i, data.correct, btn);
                 answersContainer.appendChild(btn);
             });
+        }
+
+        function showLevelCompletionScreen() {
+            const currentStars = levelStars[currentGameLevel] || 0;
+            const passed = currentStars >= 4;
+
+            levelIndicator.textContent = passed ? "🎊 GRATULACJE! 🎊" : "😊 Koniec poziomu";
+            levelIndicator.style.fontSize = '1.3rem';
+            levelIndicator.style.background = passed
+                ? 'linear-gradient(135deg, #FFD700, #FFA500)'
+                : 'linear-gradient(135deg, #FF6B6B, #FF8E53)';
+
+            questionText.style.background = 'none';
+            questionText.style.webkitTextFillColor = 'initial';
+            questionText.innerHTML = `
+                <div style="font-size: 2rem; margin: 20px 0; color: #667eea;">🌟 WYNIK POZIOMU 🌟</div>
+                <div style="font-size: 1.5rem; color: #2C3E50;">Zdobyłeś <span style="color: #FFD700; font-size: 2rem; font-weight: bold;">${currentStars}/5</span> gwiazdek!</div>
+            `;
+
+            answersContainer.innerHTML = '';
+            imageScene.innerHTML = '';
+
+            const congratsMsg = document.createElement('div');
+            congratsMsg.style.cssText = 'font-size: 1.8rem; color: #FF6B6B; margin: 20px 0; font-weight: bold;';
+
+            if (currentStars === 5) {
+                congratsMsg.innerHTML = '🏆 PERFEKCYJNIE! Wszystkie gwiazdki! 🏆';
+            } else if (currentStars >= 4) {
+                congratsMsg.innerHTML = '✨ ŚWIETNIE! Przechodzisz dalej! ✨';
+            } else {
+                congratsMsg.innerHTML = '💪 Spróbuj ponownie, by przejść dalej!';
+            }
+            answersContainer.appendChild(congratsMsg);
+
+            // Przyciski
+            if (passed && gameLevels[currentGameLevel + 1]) {
+                const nextLevelBtn = document.createElement('button');
+                nextLevelBtn.className = 'answer-btn';
+                nextLevelBtn.style.cssText = `
+                    background: linear-gradient(135deg, #4CAF50, #66BB6A);
+                    border-color: #2E7D32;
+                    font-size: 1.3rem;
+                    padding: 18px 30px;
+                    margin-top: 10px;
+                `;
+                nextLevelBtn.innerHTML = "➡️ Następny poziom";
+                nextLevelBtn.onclick = () => {
+                    currentGameLevel++;
+                    currentQuestionIndex = 0;
+                    stars = 0;
+                    saveProgress();
+                    initStars();
+                    loadQuestion();
+                };
+                answersContainer.appendChild(nextLevelBtn);
+            } else if (!gameLevels[currentGameLevel + 1] && passed) {
+                showFinalScreen();
+                return;
+            }
+
+            const retryBtn = document.createElement('button');
+            retryBtn.className = 'answer-btn';
+            retryBtn.style.cssText = `
+                background: linear-gradient(135deg, #FFD700, #FFA500);
+                border-color: #FF8C00;
+                font-size: 1.3rem;
+                padding: 18px 30px;
+                margin-top: 10px;
+            `;
+            retryBtn.innerHTML = "🔄 Zagraj ponownie ten poziom";
+            retryBtn.onclick = () => {
+                currentQuestionIndex = 0;
+                stars = 0;
+                levelStars[currentGameLevel] = 0;
+                saveProgress();
+                initStars();
+                loadQuestion();
+            };
+            answersContainer.appendChild(retryBtn);
+        }
+
+        function showFinalScreen() {
+            levelIndicator.textContent = "🎊 GRATULACJE! 🎊";
+            levelIndicator.style.fontSize = '1.3rem';
+            levelIndicator.style.background = 'linear-gradient(135deg, #FFD700, #FFA500)';
+
+            questionText.style.background = 'none';
+            questionText.style.webkitTextFillColor = 'initial';
+
+            const totalStars = Object.values(levelStars).reduce((a, b) => a + b, 0);
+            const maxStars = Object.keys(gameLevels).length * 5;
+
+            questionText.innerHTML = `
+                <div style="font-size: 2rem; margin: 20px 0; color: #667eea;">🎉 UKOŃCZYŁEŚ WSZYSTKIE POZIOMY! 🎉</div>
+                <div style="font-size: 1.5rem; color: #2C3E50;">Łącznie zdobyłeś <span style="color: #FFD700; font-size: 2rem; font-weight: bold;">${totalStars}/${maxStars}</span> gwiazdek!</div>
+            `;
+
+            answersContainer.innerHTML = '';
+            imageScene.innerHTML = '';
+
+            const congratsMsg = document.createElement('div');
+            congratsMsg.style.cssText = 'font-size: 1.8rem; color: #FF6B6B; margin: 20px 0; font-weight: bold;';
+            congratsMsg.innerHTML = '🏆 Jesteś MISTRZEM zagadek! 🏆';
+            answersContainer.appendChild(congratsMsg);
+
+            const restartBtn = document.createElement('button');
+            restartBtn.className = 'answer-btn';
+            restartBtn.style.cssText = `
+                background: linear-gradient(135deg, #FFD700, #FFA500);
+                border-color: #FF8C00;
+                font-size: 1.3rem;
+                padding: 18px 30px;
+                margin-top: 20px;
+            `;
+            restartBtn.innerHTML = "🔄 Zacznij od początku";
+            restartBtn.onclick = () => resetProgress();
+            answersContainer.appendChild(restartBtn);
         }
 
         function checkAnswer(selectedIndex, correctIndex, btnElement) {
@@ -991,8 +1167,9 @@
 
         window.nextLevel = function() {
             modal.classList.add('hidden');
-            currentLevel++;
-            loadLevel(currentLevel);
+            currentQuestionIndex++;
+            saveProgress();
+            loadQuestion();
         }
 
     </script>
