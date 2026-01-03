@@ -22,6 +22,9 @@
     <link rel="icon" type="image/png" sizes="192x192" href="/icon.svg">
     <link rel="icon" type="image/png" sizes="512x512" href="/icon.svg">
 
+    <!-- Confetti Library -->
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+
     <style>
         /* --- Style Ogólne --- */
         :root {
@@ -242,10 +245,25 @@
             border-radius: 50px;
             box-shadow: 0 4px 15px rgba(255, 215, 0, 0.4);
             display: flex;
+            flex-direction: column;
             align-items: center;
-            gap: 8px;
+            gap: 5px;
             z-index: 20;
             border: 3px solid #FF8C00;
+        }
+
+        .stars-container-row {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .progress-text {
+            font-size: 0.9rem;
+            color: #fff;
+            font-weight: bold;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.3);
+            margin-top: 2px;
         }
 
         .star {
@@ -264,9 +282,13 @@
         }
 
         @keyframes starPop {
-            0% { transform: scale(0); }
-            50% { transform: scale(1.3); }
-            100% { transform: scale(1); }
+            0% { transform: scale(0) rotate(0deg); }
+            50% { transform: scale(1.3) rotate(180deg); }
+            100% { transform: scale(1) rotate(360deg); }
+        }
+
+        .star-earned {
+            animation: starPop 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55);
         }
 
         .game-card {
@@ -805,8 +827,11 @@
         <!-- GAME SCREEN -->
         <div id="game-screen" class="screen hidden">
             <!-- Pasek Gwiazdek -->
-            <div class="stars-header" id="stars-container">
-                <!-- Gwiazdki będą generowane przez JavaScript -->
+            <div class="stars-header">
+                <div class="stars-container-row" id="stars-container">
+                    <!-- Gwiazdki będą generowane przez JavaScript -->
+                </div>
+                <div class="progress-text" id="progress-text">Pytanie 1/5</div>
             </div>
 
             <div class="game-card">
@@ -919,6 +944,69 @@
         let stars = 0; // Liczba zdobytych gwiazdek w aktualnym poziomie
         let levelStars = {}; // Gwiazdki zdobyte na każdym poziomie
         const totalQuestionsPerLevel = 5;
+
+        /* --- System dźwięków (opcjonalny - pliki muszą istnieć) --- */
+        const sounds = {
+            correct: null,
+            wrong: null,
+            complete: null
+        };
+
+        // Próba załadowania dźwięków (jeśli pliki istnieją)
+        try {
+            sounds.correct = new Audio('correct.mp3');
+            sounds.wrong = new Audio('wrong.mp3');
+            sounds.complete = new Audio('complete.mp3');
+        } catch (e) {
+            console.log('Dźwięki niedostępne');
+        }
+
+        // Funkcja odtwarzania dźwięku
+        function playSound(soundName) {
+            if (sounds[soundName]) {
+                sounds[soundName].currentTime = 0;
+                sounds[soundName].play().catch(() => {});
+            }
+        }
+
+        // Funkcja wibracji (dla urządzeń mobilnych)
+        function vibrate(pattern) {
+            if (navigator.vibrate) {
+                navigator.vibrate(pattern);
+            }
+        }
+
+        // Funkcja confetti (efekt konfetti)
+        function launchConfetti() {
+            if (typeof confetti === 'function') {
+                // Pierwsze confetti
+                confetti({
+                    particleCount: 100,
+                    spread: 70,
+                    origin: { y: 0.6 }
+                });
+
+                // Drugie confetti po chwili
+                setTimeout(() => {
+                    confetti({
+                        particleCount: 50,
+                        angle: 60,
+                        spread: 55,
+                        origin: { x: 0 }
+                    });
+                }, 250);
+
+                // Trzecie confetti z drugiej strony
+                setTimeout(() => {
+                    confetti({
+                        particleCount: 50,
+                        angle: 120,
+                        spread: 55,
+                        origin: { x: 1 }
+                    });
+                }, 400);
+            }
+        }
 
         /* --- Service Worker Registration --- */
         if ('serviceWorker' in navigator) {
@@ -1033,6 +1121,15 @@
                     }
                 }
             }
+            updateProgressText();
+        }
+
+        // Aktualizacja tekstu postępu
+        function updateProgressText() {
+            const progressText = document.getElementById('progress-text');
+            if (progressText) {
+                progressText.textContent = `Pytanie ${currentQuestionIndex + 1}/5`;
+            }
         }
 
         // Dodawanie gwiazdki
@@ -1040,15 +1137,13 @@
             const star = document.getElementById(`star-${stars}`);
             if (star) {
                 star.classList.remove('empty');
-                star.classList.add('filled');
-                // Animacja pojawiania się
-                star.style.transform = 'scale(0)';
+                star.classList.add('filled', 'star-earned');
+
+                // Usuń klasę animacji po zakończeniu
                 setTimeout(() => {
-                    star.style.transform = 'scale(1.3)';
-                    setTimeout(() => {
-                        star.style.transform = 'scale(1)';
-                    }, 200);
-                }, 50);
+                    star.classList.remove('star-earned');
+                }, 600);
+
                 stars++;
                 levelStars[currentGameLevel] = stars;
                 saveProgress();
@@ -1124,6 +1219,7 @@
             levelIndicator.innerHTML = `${currentLevel.emoji} ${currentLevel.name} - Zadanie ${currentQuestionIndex + 1}/5`;
             questionText.textContent = data.question;
             answersContainer.innerHTML = '';
+            updateProgressText();
 
             // Obsługa obrazka
             if (data.hasImage && currentGameLevel === 0 && currentQuestionIndex === 0) {
@@ -1146,6 +1242,13 @@
         function showLevelCompletionScreen() {
             const currentStars = levelStars[currentGameLevel] || 0;
             const passed = currentStars >= 4;
+
+            // Odtwórz dźwięk, wibrację i confetti przy ukończeniu poziomu
+            if (passed) {
+                playSound('complete');
+                vibrate([200, 100, 200, 100, 200]); // Wibracja sukcesu
+                launchConfetti(); // Efekt confetti!
+            }
 
             levelIndicator.textContent = passed ? "🎊 GRATULACJE! 🎊" : "😊 Koniec poziomu";
             levelIndicator.style.fontSize = '1.3rem';
@@ -1267,10 +1370,14 @@
             if (selectedIndex === correctIndex) {
                 btnElement.classList.add('correct');
                 addStar(); // Dodaj gwiazdkę za poprawną odpowiedź!
+                playSound('correct');
+                vibrate(200); // Wibracja sukcesu
                 setTimeout(() => showModal(true), 700);
             } else {
                 btnElement.classList.add('wrong');
                 allBtns[correctIndex].classList.add('correct');
+                playSound('wrong');
+                vibrate([100, 50, 100]); // Wibracja błędu (krótka-przerwa-krótka)
                 setTimeout(() => showModal(false), 1000);
             }
         }
