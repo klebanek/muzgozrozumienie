@@ -832,13 +832,271 @@
             transform: scale(0.95);
         }
 
+        /* --- AVATAR CREATOR STYLES --- */
+        #avatar-screen {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 20px;
+            overflow-y: auto;
+        }
+
+        .avatar-creator-container {
+            max-width: 500px;
+            margin: 0 auto;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 25px;
+        }
+
+        .avatar-title {
+            font-size: 2.5rem;
+            color: white;
+            text-align: center;
+            margin: 20px 0;
+            text-shadow: 3px 3px 6px rgba(0,0,0,0.3);
+            animation: titlePulse 2s infinite;
+        }
+
+        @keyframes titlePulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        .section {
+            width: 100%;
+            background: rgba(255, 255, 255, 0.95);
+            padding: 20px;
+            border-radius: 20px;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+        }
+
+        .section-label {
+            font-size: 1.3rem;
+            font-weight: bold;
+            color: #667eea;
+            margin-bottom: 15px;
+            text-align: center;
+        }
+
+        /* Siatka awatarów */
+        .avatar-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+            margin-top: 10px;
+        }
+
+        .avatar-btn {
+            background: linear-gradient(135deg, #FFFFFF, #F0F4FF);
+            border: 4px solid #B8C5FF;
+            border-radius: 20px;
+            padding: 20px;
+            font-size: 3rem;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            aspect-ratio: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+        }
+
+        .avatar-btn:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+        }
+
+        .avatar-btn.selected {
+            border-color: #FFD700;
+            border-width: 5px;
+            background: linear-gradient(135deg, #FFF8DC, #FFFACD);
+            transform: scale(1.1);
+            box-shadow: 0 0 0 4px rgba(255, 215, 0, 0.3),
+                        0 8px 20px rgba(0,0,0,0.3);
+            animation: selectedBounce 0.6s ease-out;
+        }
+
+        @keyframes selectedBounce {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.2); }
+            100% { transform: scale(1.1); }
+        }
+
+        /* Pole tekstowe na imię */
+        .name-input {
+            width: 100%;
+            padding: 15px 20px;
+            font-size: 1.3rem;
+            font-family: inherit;
+            border: 4px solid #B8C5FF;
+            border-radius: 15px;
+            text-align: center;
+            font-weight: bold;
+            color: #2C3E50;
+            background: white;
+            box-shadow: inset 0 2px 5px rgba(0,0,0,0.05);
+            transition: all 0.3s;
+            box-sizing: border-box;
+        }
+
+        .name-input:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 4px rgba(102, 126, 234, 0.2);
+            transform: scale(1.02);
+        }
+
+        .name-input::placeholder {
+            color: #B0B0B0;
+        }
+
+        /* Sekcja podglądu */
+        .preview-section {
+            width: 100%;
+        }
+
+        .avatar-preview-card {
+            background: linear-gradient(135deg, #FFD700, #FFA500);
+            padding: 25px;
+            border-radius: 25px;
+            text-align: center;
+            box-shadow: 0 10px 30px rgba(255, 165, 0, 0.4);
+            border: 5px solid #FF8C00;
+            animation: previewFloat 3s ease-in-out infinite;
+        }
+
+        @keyframes previewFloat {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+        }
+
+        .preview-avatar {
+            font-size: 5rem;
+            margin-bottom: 10px;
+            filter: drop-shadow(0 4px 8px rgba(0,0,0,0.2));
+            transition: transform 0.3s;
+        }
+
+        .preview-name {
+            font-size: 1.8rem;
+            font-weight: bold;
+            color: white;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        /* Przycisk START */
+        .avatar-start-btn {
+            background: linear-gradient(135deg, #4CAF50, #66BB6A);
+            color: white;
+            border: none;
+            padding: 20px 60px;
+            font-size: 1.8rem;
+            border-radius: 50px;
+            cursor: pointer;
+            font-family: inherit;
+            font-weight: bold;
+            box-shadow: 0 8px 0 #2E7D32, 0 10px 25px rgba(0,0,0,0.3);
+            transition: all 0.2s;
+            margin-top: 10px;
+            animation: pulse-btn 2s infinite;
+        }
+
+        .avatar-start-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 11px 0 #2E7D32, 0 13px 30px rgba(0,0,0,0.35);
+        }
+
+        .avatar-start-btn:active {
+            transform: translateY(5px);
+            box-shadow: 0 3px 0 #2E7D32, 0 5px 15px rgba(0,0,0,0.2);
+        }
+
+        .avatar-start-btn:disabled {
+            background: #B0BEC5;
+            cursor: not-allowed;
+            box-shadow: none;
+            animation: none;
+        }
+
+        /* Responsywność dla Avatar Creator */
+        @media (max-width: 480px) {
+            .avatar-title {
+                font-size: 2rem;
+            }
+
+            .avatar-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 10px;
+            }
+
+            .avatar-btn {
+                font-size: 2.5rem;
+                padding: 15px;
+            }
+
+            .preview-avatar {
+                font-size: 4rem;
+            }
+
+            .preview-name {
+                font-size: 1.5rem;
+            }
+
+            .avatar-start-btn {
+                padding: 15px 40px;
+                font-size: 1.5rem;
+            }
+
+            .name-input {
+                font-size: 1.1rem;
+            }
+        }
+
     </style>
 </head>
 <body>
 
     <div id="app">
+        <!-- AVATAR SELECTION SCREEN -->
+        <div id="avatar-screen" class="screen">
+            <div class="avatar-creator-container">
+                <h1 class="avatar-title">🎨 Stwórz swoją postać! 🎨</h1>
+
+                <div class="section">
+                    <p class="section-label">Wybierz swojego bohatera:</p>
+                    <div class="avatar-grid" id="avatar-grid">
+                        <!-- Przyciski będą generowane przez JavaScript -->
+                    </div>
+                </div>
+
+                <div class="section">
+                    <p class="section-label">Jak masz na imię?</p>
+                    <input
+                        type="text"
+                        id="player-name-input"
+                        class="name-input"
+                        placeholder="Wpisz swoje imię"
+                        maxlength="15"
+                        autocomplete="off"
+                    >
+                </div>
+
+                <div class="preview-section">
+                    <p class="section-label" style="color: white; text-shadow: 2px 2px 4px rgba(0,0,0,0.3);">Tak będziesz wyglądać w grze:</p>
+                    <div class="avatar-preview-card">
+                        <div class="preview-avatar" id="preview-avatar">🐱</div>
+                        <div class="preview-name" id="preview-name">Gracz</div>
+                    </div>
+                </div>
+
+                <button class="avatar-start-btn" id="avatar-start-btn" onclick="saveAvatarAndStart()">
+                    GOTOWE! ▶️
+                </button>
+            </div>
+        </div>
+
         <!-- SPLASH SCREEN -->
-        <div id="splash-screen" class="screen">
+        <div id="splash-screen" class="screen hidden">
             <h1 class="title" id="colorful-title">
                 <!-- Title will be generated by JavaScript -->
             </h1>
@@ -911,6 +1169,124 @@
     </div>
 
     <script>
+        /* --- AVATAR CREATOR LOGIC --- */
+        const avatars = [
+            { emoji: '🐱', name: 'Kotek' },
+            { emoji: '🐶', name: 'Piesek' },
+            { emoji: '🦊', name: 'Lisek' },
+            { emoji: '🐻', name: 'Miś' },
+            { emoji: '🐼', name: 'Panda' },
+            { emoji: '🦁', name: 'Lew' }
+        ];
+
+        let playerAvatar = '🐱'; // Domyślny awatar
+        let playerName = 'Gracz'; // Domyślne imię
+
+        // Inicjalizacja Avatar Screenu
+        function initAvatarScreen() {
+            const avatarGrid = document.getElementById('avatar-grid');
+            const nameInput = document.getElementById('player-name-input');
+            const previewAvatar = document.getElementById('preview-avatar');
+            const previewName = document.getElementById('preview-name');
+
+            // Generuj przyciski awatarów
+            avatarGrid.innerHTML = '';
+            avatars.forEach((avatar, index) => {
+                const btn = document.createElement('button');
+                btn.className = 'avatar-btn';
+                btn.textContent = avatar.emoji;
+                btn.title = avatar.name;
+                btn.onclick = () => selectAvatar(avatar.emoji, index);
+
+                // Domyślnie zaznacz pierwszego (kotka)
+                if (index === 0) {
+                    btn.classList.add('selected');
+                }
+
+                avatarGrid.appendChild(btn);
+            });
+
+            // Obsługa pola tekstowego
+            nameInput.addEventListener('input', (e) => {
+                const name = e.target.value.trim();
+                previewName.textContent = name || 'Gracz';
+            });
+
+            // Wczytaj zapisane dane jeśli istnieją
+            const savedAvatar = localStorage.getItem('playerAvatar');
+            const savedName = localStorage.getItem('playerName');
+
+            if (savedAvatar) {
+                playerAvatar = savedAvatar;
+                previewAvatar.textContent = savedAvatar;
+
+                // Zaznacz odpowiedni przycisk
+                const avatarIndex = avatars.findIndex(a => a.emoji === savedAvatar);
+                if (avatarIndex !== -1) {
+                    document.querySelectorAll('.avatar-btn').forEach((btn, i) => {
+                        btn.classList.toggle('selected', i === avatarIndex);
+                    });
+                }
+            }
+
+            if (savedName) {
+                playerName = savedName;
+                nameInput.value = savedName;
+                previewName.textContent = savedName;
+            }
+        }
+
+        // Wybór awatara
+        function selectAvatar(emoji, index) {
+            playerAvatar = emoji;
+            const previewAvatar = document.getElementById('preview-avatar');
+
+            // Aktualizuj podgląd z animacją
+            previewAvatar.style.transform = 'scale(0)';
+            setTimeout(() => {
+                previewAvatar.textContent = emoji;
+                previewAvatar.style.transform = 'scale(1)';
+            }, 150);
+
+            // Wibracja przy wyborze
+            if (typeof vibrate === 'function') {
+                vibrate(50);
+            } else if (navigator.vibrate) {
+                navigator.vibrate(50);
+            }
+
+            // Odznacz wszystkie i zaznacz wybrany
+            document.querySelectorAll('.avatar-btn').forEach((btn, i) => {
+                btn.classList.toggle('selected', i === index);
+            });
+        }
+
+        // Zapisz i rozpocznij grę
+        window.saveAvatarAndStart = function() {
+            const nameInput = document.getElementById('player-name-input');
+            const inputName = nameInput.value.trim();
+
+            playerName = inputName || 'Gracz';
+
+            // Zapisz w localStorage
+            localStorage.setItem('playerAvatar', playerAvatar);
+            localStorage.setItem('playerName', playerName);
+
+            // Wibracja przy starcie
+            if (navigator.vibrate) {
+                navigator.vibrate(200);
+            }
+
+            // Ukryj avatar screen, pokaż splash screen
+            document.getElementById('avatar-screen').classList.add('hidden');
+            document.getElementById('splash-screen').classList.remove('hidden');
+        }
+
+        // Wywołaj inicjalizację po załadowaniu strony
+        window.addEventListener('load', () => {
+            initAvatarScreen();
+        });
+
         /* --- DANE GRY - WIELOPOZIOMOWE --- */
         const gameLevels = {
             0: {
@@ -1289,7 +1665,37 @@
         // Inicjalizacja gwiazdek
         function initStars() {
             const starsContainer = document.getElementById('stars-container');
+            const starsHeader = document.querySelector('.stars-header');
             starsContainer.innerHTML = '';
+
+            // Usuń poprzednie info o graczu jeśli istnieje
+            const existingPlayerInfo = starsHeader.querySelector('.player-info');
+            if (existingPlayerInfo) {
+                existingPlayerInfo.remove();
+            }
+
+            // Dodaj awatar i imię gracza NA GÓRZE
+            const playerInfo = document.createElement('div');
+            playerInfo.className = 'player-info';
+            playerInfo.style.cssText = `
+                font-size: 1.2rem;
+                color: white;
+                font-weight: bold;
+                margin-bottom: 8px;
+                text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+                display: flex;
+                align-items: center;
+                gap: 8px;
+            `;
+            playerInfo.innerHTML = `
+                <span style="font-size: 1.5rem;">${playerAvatar}</span>
+                <span>${playerName}</span>
+            `;
+
+            // Wstaw przed gwiazdkami
+            starsHeader.insertBefore(playerInfo, starsContainer);
+
+            // Generuj gwiazdki
             for (let i = 0; i < totalQuestionsPerLevel; i++) {
                 const star = document.createElement('span');
                 star.className = 'star empty';
@@ -1297,6 +1703,7 @@
                 star.id = `star-${i}`;
                 starsContainer.appendChild(star);
             }
+
             // Wypełnij gwiazdki na podstawie zapisanego postępu
             if (levelStars[currentGameLevel]) {
                 for (let i = 0; i < levelStars[currentGameLevel]; i++) {
@@ -1457,8 +1864,9 @@
             questionText.style.background = 'none';
             questionText.style.webkitTextFillColor = 'initial';
             questionText.innerHTML = `
-                <div style="font-size: 2rem; margin: 20px 0; color: #667eea;">🌟 WYNIK POZIOMU 🌟</div>
-                <div style="font-size: 1.5rem; color: #2C3E50;">Zdobyłeś <span style="color: #FFD700; font-size: 2rem; font-weight: bold;">${currentStars}/5</span> gwiazdek!</div>
+                <div style="font-size: 4rem; margin: 10px 0;">${playerAvatar}</div>
+                <div style="font-size: 2rem; margin: 10px 0; color: #667eea;">🌟 WYNIK POZIOMU 🌟</div>
+                <div style="font-size: 1.5rem; color: #2C3E50;">${playerName}, zdobyłeś <span style="color: #FFD700; font-size: 2rem; font-weight: bold;">${currentStars}/5</span> gwiazdek!</div>
             `;
 
             answersContainer.innerHTML = '';
@@ -1535,7 +1943,8 @@
             const maxStars = Object.keys(gameLevels).length * 5;
 
             questionText.innerHTML = `
-                <div style="font-size: 2rem; margin: 20px 0; color: #667eea;">🎉 UKOŃCZYŁEŚ WSZYSTKIE POZIOMY! 🎉</div>
+                <div style="font-size: 5rem; margin: 10px 0;">${playerAvatar}</div>
+                <div style="font-size: 2rem; margin: 20px 0; color: #667eea;">🎉 ${playerName.toUpperCase()}, UKOŃCZYŁEŚ GRĘ! 🎉</div>
                 <div style="font-size: 1.5rem; color: #2C3E50;">Łącznie zdobyłeś <span style="color: #FFD700; font-size: 2rem; font-weight: bold;">${totalStars}/${maxStars}</span> gwiazdek!</div>
             `;
 
@@ -1559,6 +1968,25 @@
             restartBtn.innerHTML = "🔄 Zacznij od początku";
             restartBtn.onclick = () => resetProgress();
             answersContainer.appendChild(restartBtn);
+
+            // Przycisk zmiany postaci
+            const changeAvatarBtn = document.createElement('button');
+            changeAvatarBtn.className = 'answer-btn';
+            changeAvatarBtn.style.cssText = `
+                background: linear-gradient(135deg, #667eea, #764ba2);
+                border-color: #5a67d8;
+                font-size: 1.1rem;
+                padding: 12px 25px;
+                margin-top: 10px;
+            `;
+            changeAvatarBtn.innerHTML = "🎨 Zmień postać";
+            changeAvatarBtn.onclick = () => {
+                // Pokaż ponownie ekran wyboru awatara
+                document.getElementById('game-screen').classList.add('hidden');
+                document.getElementById('avatar-screen').classList.remove('hidden');
+                initAvatarScreen();
+            };
+            answersContainer.appendChild(changeAvatarBtn);
         }
 
         function checkAnswer(selectedIndex, correctIndex, btnElement) {
