@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Icon Generator</title>
+</head>
+<body>
+    <h2>PWA Icon Generator</h2>
+    <p>Right-click and save the images below:</p>
+    <canvas id="canvas192" width="192" height="192"></canvas>
+    <br>
+    <a id="download192">Download 192x192 Icon</a>
+    <br><br>
+    <canvas id="canvas512" width="512" height="512"></canvas>
+    <br>
+    <a id="download512">Download 512x512 Icon</a>
+
+    <script>
+        function generateIcon(size, canvasId, downloadId) {
+            const canvas = document.getElementById(canvasId);
+            const ctx = canvas.getContext('2d');
+
+            // Background
+            ctx.fillStyle = '#E1F5FE';
+            ctx.fillRect(0, 0, size, size);
+
+            // Text
+            ctx.font = `bold ${size * 0.23}px Arial`;
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'middle';
+
+            // M2G text
+            const text = 'M2G';
+            ctx.fillStyle = '#4CAF50';
+            ctx.fillText('M', size * 0.25, size * 0.35);
+            ctx.fillStyle = '#2196F3';
+            ctx.fillText('2', size * 0.50, size * 0.35);
+            ctx.fillStyle = '#9C27B0';
+            ctx.fillText('G', size * 0.75, size * 0.35);
+
+            // Play button
+            ctx.fillStyle = '#2196F3';
+            ctx.beginPath();
+            ctx.arc(size * 0.5, size * 0.65, size * 0.15, 0, 2 * Math.PI);
+            ctx.fill();
+
+            // Play triangle
+            ctx.fillStyle = 'white';
+            ctx.beginPath();
+            ctx.moveTo(size * 0.45, size * 0.57);
+            ctx.lineTo(size * 0.45, size * 0.73);
+            ctx.lineTo(size * 0.58, size * 0.65);
+            ctx.closePath();
+            ctx.fill();
+
+            // Heart
+            ctx.fillStyle = '#FF69B4';
+            ctx.font = `${size * 0.12}px Arial`;
+            ctx.fillText('♥', size * 0.5, size * 0.88);
+
+            // Download link
+            canvas.toBlob(function(blob) {
+                const url = URL.createObjectURL(blob);
+                const link = document.getElementById(downloadId);
+                link.href = url;
+                link.download = `icon-${size}.png`;
+            });
+        }
+
+        generateIcon(192, 'canvas192', 'download192');
+        generateIcon(512, 'canvas512', 'download512');
+    </script>
+</body>
+</html>
