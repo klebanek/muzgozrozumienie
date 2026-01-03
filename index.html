@@ -954,9 +954,9 @@
 
         // Próba załadowania dźwięków (jeśli pliki istnieją)
         try {
-            sounds.correct = new Audio('correct.wav');
-            sounds.wrong = new Audio('wrong.mp3');
-            sounds.complete = new Audio('complete.mp3');
+            sounds.correct = new Audio('Correct.wav');
+            sounds.wrong = new Audio('Correct.mp3'); // Używamy tego samego dźwięku
+            sounds.complete = new Audio('Correct.mp3'); // Używamy tego samego dźwięku
         } catch (e) {
             console.log('Dźwięki niedostępne');
         }
