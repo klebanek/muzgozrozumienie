@@ -251,15 +251,16 @@
         .star {
             font-size: 2rem;
             filter: drop-shadow(0 2px 4px rgba(0,0,0,0.2));
+            transition: all 0.3s ease;
         }
 
         .star.filled {
             color: #FFD700;
-            animation: starPop 0.5s ease-out;
         }
 
         .star.empty {
-            color: #DDD;
+            color: transparent;
+            text-shadow: 0 0 0 #CCC;
         }
 
         @keyframes starPop {
@@ -855,6 +856,14 @@
             if (star) {
                 star.classList.remove('empty');
                 star.classList.add('filled');
+                // Animacja pojawiania się
+                star.style.transform = 'scale(0)';
+                setTimeout(() => {
+                    star.style.transform = 'scale(1.3)';
+                    setTimeout(() => {
+                        star.style.transform = 'scale(1)';
+                    }, 200);
+                }, 50);
                 stars++;
             }
         }
@@ -877,11 +886,13 @@
                 levelIndicator.style.fontSize = '1.3rem';
                 levelIndicator.style.background = 'linear-gradient(135deg, #FFD700, #FFA500)';
 
+                // Resetujemy style dla tekstu pytania
+                questionText.style.background = 'none';
+                questionText.style.webkitTextFillColor = 'initial';
                 questionText.innerHTML = `
-                    <div style="font-size: 2rem; margin: 20px 0;">🌟 WYNIK KOŃCOWY 🌟</div>
-                    <div style="font-size: 1.5rem;">Zdobyłeś <span style="color: #FFD700; font-size: 2rem;">${stars}/${totalLevels}</span> gwiazdek!</div>
+                    <div style="font-size: 2rem; margin: 20px 0; color: #667eea;">🌟 WYNIK KOŃCOWY 🌟</div>
+                    <div style="font-size: 1.5rem; color: #2C3E50;">Zdobyłeś <span style="color: #FFD700; font-size: 2rem; font-weight: bold;">${stars}/${totalLevels}</span> gwiazdek!</div>
                 `;
-                questionText.style.background = 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)';
 
                 answersContainer.innerHTML = '';
                 imageScene.innerHTML = '';
@@ -949,32 +960,32 @@
         }
 
         const successMessages = [
-            { title: "🎉 Super!", msg: "Jesteś prawdziwym mistrzem zagadek!" },
-            { title: "🌟 Wspaniale!", msg: "Świetnie myślisz!" },
-            { title: "🏆 Brawo!", msg: "Fantastyczna robota!" },
-            { title: "✨ Cudownie!", msg: "Jesteś niesamowity!" },
-            { title: "🎊 Wow!", msg: "Doskonała odpowiedź!" }
+            "🎉 Super!",
+            "🌟 Wspaniale!",
+            "🏆 Brawo!",
+            "✨ Cudownie!",
+            "🎊 Wow!"
         ];
 
         const failMessages = [
-            { title: "😊 Prawie!", msg: "Spróbuj jeszcze raz, na pewno dasz radę!" },
-            { title: "💪 Nie poddawaj się!", msg: "Następnym razem będzie lepiej!" },
-            { title: "🤗 Nic się nie stało!", msg: "Każdy może się pomylić!" },
-            { title: "💡 Spróbuj ponownie!", msg: "Zastanów się chwilkę dłużej!" }
+            "😊 Prawie!",
+            "💪 Nie poddawaj się!",
+            "🤗 Nic się nie stało!",
+            "💡 Spróbuj ponownie!"
         ];
 
         function showModal(isSuccess) {
             modal.classList.remove('hidden');
             if (isSuccess) {
                 const msg = successMessages[Math.floor(Math.random() * successMessages.length)];
-                modalTitle.textContent = msg.title;
+                modalTitle.textContent = msg;
                 modalTitle.style.color = "#4CAF50";
-                modalMsg.textContent = msg.msg;
+                modalMsg.textContent = "";
             } else {
                 const msg = failMessages[Math.floor(Math.random() * failMessages.length)];
-                modalTitle.textContent = msg.title;
+                modalTitle.textContent = msg;
                 modalTitle.style.color = "#FF9800";
-                modalMsg.textContent = msg.msg;
+                modalMsg.textContent = "";
             }
         }
 
