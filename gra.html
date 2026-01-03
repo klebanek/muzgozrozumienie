@@ -538,6 +538,84 @@
             transform: translateY(4px);
         }
 
+        /* --- Ekran Powitalny Poziomu --- */
+        .level-intro-screen {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+            height: 100%;
+            position: absolute;
+            top: 0;
+            left: 0;
+            background: linear-gradient(135deg, #E1F5FE 0%, #B3E5FC 50%, #81D4FA 100%);
+            z-index: 50;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+
+        .level-intro-content {
+            text-align: center;
+            animation: pop 0.6s ease-out;
+        }
+
+        .level-intro-title {
+            font-size: 3rem;
+            font-weight: bold;
+            color: #FF6B6B;
+            margin-bottom: 30px;
+            text-shadow: 3px 3px 0px rgba(0,0,0,0.1);
+            animation: bounce 1s ease-in-out infinite;
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+
+        .level-intro-image {
+            width: 90%;
+            max-width: 400px;
+            height: auto;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            margin: 20px 0;
+        }
+
+        .level-intro-description {
+            font-size: 1.5rem;
+            color: #2C3E50;
+            margin: 20px 0;
+            font-weight: bold;
+        }
+
+        .level-intro-btn {
+            background: linear-gradient(135deg, #4CAF50, #66BB6A);
+            color: white;
+            border: none;
+            padding: 18px 50px;
+            font-size: 1.5rem;
+            border-radius: 50px;
+            margin-top: 30px;
+            cursor: pointer;
+            font-family: inherit;
+            box-shadow: 0 8px 0 #2E7D32, 0 10px 20px rgba(0,0,0,0.3);
+            transition: all 0.2s;
+            font-weight: bold;
+            animation: pulse-btn 2s infinite;
+        }
+
+        .level-intro-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 11px 0 #2E7D32, 0 13px 25px rgba(0,0,0,0.35);
+        }
+
+        .level-intro-btn:active {
+            transform: translateY(5px);
+            box-shadow: 0 3px 0 #2E7D32, 0 5px 10px rgba(0,0,0,0.2);
+        }
+
         /* --- MEDIA QUERIES (DODATKOWA RESPONSYWNOŚĆ DLA MAŁYCH EKRANÓW) --- */
         @media (max-width: 480px) {
             h1.title {
@@ -595,6 +673,19 @@
             .answer-btn {
                 padding: 12px 15px;
                 font-size: 1.05rem;
+            }
+
+            .level-intro-title {
+                font-size: 2rem;
+            }
+
+            .level-intro-description {
+                font-size: 1.2rem;
+            }
+
+            .level-intro-btn {
+                padding: 15px 40px;
+                font-size: 1.3rem;
             }
         }
 
@@ -701,6 +792,16 @@
             </div>
         </div>
 
+        <!-- LEVEL INTRO SCREEN -->
+        <div id="level-intro-screen" class="level-intro-screen hidden">
+            <div class="level-intro-content">
+                <div class="level-intro-title" id="level-intro-title">🎮 POZIOM 1 🎮</div>
+                <img id="level-intro-image" class="level-intro-image hidden" alt="Poziom">
+                <div class="level-intro-description" id="level-intro-description">Gotowy na nowe wyzwanie?</div>
+                <button class="level-intro-btn" onclick="startLevelFromIntro()">▶️ START!</button>
+            </div>
+        </div>
+
         <!-- GAME SCREEN -->
         <div id="game-screen" class="screen hidden">
             <!-- Pasek Gwiazdek -->
@@ -776,6 +877,8 @@
             1: {
                 name: "Poziom 1 - Matematyka",
                 emoji: "🔢",
+                introImage: "image_50043c.jpg", // Obrazek powitalny poziomu
+                introDescription: "🔢 Czas na matematykę! Sprawdź swoje umiejętności liczenia!",
                 questions: [
                     {
                         question: "Ile to jest 5 + 3?",
@@ -960,8 +1063,45 @@
         const modal = document.getElementById('modal-feedback');
         const modalTitle = document.getElementById('modal-title');
         const modalMsg = document.getElementById('modal-msg');
+        const levelIntroScreen = document.getElementById('level-intro-screen');
 
         // USUNIĘTO kod SVG (catStreetSvg) - teraz używamy pliku JPG
+
+        // Funkcja wyświetlająca ekran powitalny poziomu
+        function showLevelIntro(levelNumber) {
+            const level = gameLevels[levelNumber];
+            if (!level) return;
+
+            // Ukryj ekran gry
+            gameScreen.classList.add('hidden');
+
+            // Ustaw treść ekranu powitalnego
+            const introTitle = document.getElementById('level-intro-title');
+            const introImage = document.getElementById('level-intro-image');
+            const introDescription = document.getElementById('level-intro-description');
+
+            introTitle.textContent = `${level.emoji} ${level.name} ${level.emoji}`;
+            introDescription.textContent = level.introDescription || "Gotowy na nowe wyzwanie?";
+
+            // Pokaż obrazek jeśli jest dostępny
+            if (level.introImage) {
+                introImage.src = level.introImage;
+                introImage.classList.remove('hidden');
+            } else {
+                introImage.classList.add('hidden');
+            }
+
+            // Pokaż ekran powitalny
+            levelIntroScreen.classList.remove('hidden');
+        }
+
+        // Funkcja rozpoczynająca poziom po kliknięciu START
+        window.startLevelFromIntro = function() {
+            levelIntroScreen.classList.add('hidden');
+            gameScreen.classList.remove('hidden');
+            initStars();
+            loadQuestion();
+        }
 
         function loadQuestion() {
             const currentLevel = gameLevels[currentGameLevel];
@@ -1052,8 +1192,8 @@
                     currentQuestionIndex = 0;
                     stars = 0;
                     saveProgress();
-                    initStars();
-                    loadQuestion();
+                    // Pokaż ekran powitalny dla nowego poziomu
+                    showLevelIntro(currentGameLevel);
                 };
                 answersContainer.appendChild(nextLevelBtn);
             } else if (!gameLevels[currentGameLevel + 1] && passed) {
