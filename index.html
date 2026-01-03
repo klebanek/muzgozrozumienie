@@ -785,6 +785,53 @@
             }
         }
 
+        /* Progress bar w pytaniu */
+        .question-progress-bar {
+            width: 100%;
+            height: 8px;
+            background: rgba(0,0,0,0.1);
+            border-radius: 4px;
+            margin-bottom: 15px;
+            overflow: hidden;
+        }
+
+        .question-progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #4CAF50, #8BC34A);
+            border-radius: 4px;
+            transition: width 0.5s cubic-bezier(0.4, 0.0, 0.2, 1);
+        }
+
+        /* Przycisk Menu */
+        .menu-btn {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background: rgba(255, 255, 255, 0.9);
+            border: 3px solid #2196F3;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            font-size: 1.5rem;
+            cursor: pointer;
+            z-index: 30;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .menu-btn:hover {
+            transform: scale(1.1);
+            background: #2196F3;
+            color: white;
+        }
+
+        .menu-btn:active {
+            transform: scale(0.95);
+        }
+
     </style>
 </head>
 <body>
@@ -826,6 +873,9 @@
 
         <!-- GAME SCREEN -->
         <div id="game-screen" class="screen hidden">
+            <!-- Przycisk Menu -->
+            <button class="menu-btn" onclick="showMainMenu()" title="Menu">☰</button>
+
             <!-- Pasek Gwiazdek -->
             <div class="stars-header">
                 <div class="stars-container-row" id="stars-container">
@@ -871,30 +921,35 @@
                         question: "Co kotek ma zrobić, żeby przejść przez ulicę?",
                         answers: ["Po prostu przejść", "Poczekać na zielone światło", "Szukać innych pasów"],
                         correct: 1,
+                        explanation: "💡 Zawsze patrz na światła! Zielone = bezpieczne przejście.",
                         hasImage: true
                     },
                     {
                         question: "Jaki to miesiąc, co ma 28 dni?",
                         answers: ["Luty", "Tylko Marzec", "Każdy miesiąc", "Lipiec"],
                         correct: 2,
+                        explanation: "📅 Każdy miesiąc ma co najmniej 28 dni!",
                         hasImage: false
                     },
                     {
                         question: "Co rośnie do góry nogami?",
                         answers: ["Drzewo", "Trawa", "Sopel lodu", "Kwiatek"],
                         correct: 2,
+                        explanation: "🧊 Sopel lodu rośnie w dół, czyli do góry nogami!",
                         hasImage: false
                     },
                     {
                         question: "Im więcej tego jest, tym mniej widzisz. Co to?",
                         answers: ["Światło", "Mgła", "Deszcz", "Ciemność"],
                         correct: 3,
+                        explanation: "🌑 Im ciemniej, tym mniej widzimy!",
                         hasImage: false
                     },
                     {
                         question: "Co trzeba rozbić, aby tego użyć?",
                         answers: ["Szybę", "Jajko", "Zabawkę", "Kamień"],
                         correct: 1,
+                        explanation: "🥚 Jajko trzeba rozbić, żeby je zjeść!",
                         hasImage: false
                     }
                 ]
@@ -909,30 +964,161 @@
                         question: "Ile to jest 5 + 3?",
                         answers: ["7", "8", "9", "6"],
                         correct: 1,
+                        explanation: "🧮 5 + 3 = 8. Pięć palców + trzy palce!",
                         hasImage: false
                     },
                     {
                         question: "Ile to jest 10 - 4?",
                         answers: ["5", "6", "7", "4"],
                         correct: 1,
+                        explanation: "🧮 10 - 4 = 6. Odejmujemy cztery od dziesięciu!",
                         hasImage: false
                     },
                     {
                         question: "Masz 7 cukierków i dostajesz jeszcze 2. Ile masz razem?",
                         answers: ["8", "9", "10", "5"],
                         correct: 1,
+                        explanation: "🍬 7 + 2 = 9 cukierków! Mniam!",
                         hasImage: false
                     },
                     {
                         question: "Ile to jest 12 - 5?",
                         answers: ["6", "7", "8", "9"],
                         correct: 1,
+                        explanation: "🧮 12 - 5 = 7. Dwanaście minus pięć!",
                         hasImage: false
                     },
                     {
                         question: "Ile to jest 6 + 6?",
                         answers: ["10", "11", "12", "13"],
                         correct: 2,
+                        explanation: "🧮 6 + 6 = 12. Podwójne sześć to dwanaście!",
+                        hasImage: false
+                    }
+                ]
+            },
+            2: {
+                name: "Poziom 2 - Kolory i Kształty",
+                emoji: "🎨",
+                introDescription: "🎨 Poznaj kolory i kształty!",
+                questions: [
+                    {
+                        question: "Ile boków ma trójkąt?",
+                        answers: ["2", "3", "4", "5"],
+                        correct: 1,
+                        explanation: "💡 Trójkąt ma zawsze 3 boki i 3 kąty!",
+                        hasImage: false
+                    },
+                    {
+                        question: "Jakiego koloru jest niebo w słoneczny dzień?",
+                        answers: ["Zielone", "Niebieskie", "Czerwone", "Żółte"],
+                        correct: 1,
+                        explanation: "🌤️ Niebo jest niebieskie przez rozpraszanie światła!",
+                        hasImage: false
+                    },
+                    {
+                        question: "Jaki kształt ma koło?",
+                        answers: ["Kwadrat", "Trójkąt", "Okrąg", "Prostokąt"],
+                        correct: 2,
+                        explanation: "⭕ Koło to okrągły kształt bez kątów!",
+                        hasImage: false
+                    },
+                    {
+                        question: "Ile rogów ma kwadrat?",
+                        answers: ["3", "4", "5", "6"],
+                        correct: 1,
+                        explanation: "🔲 Kwadrat ma 4 równe boki i 4 rogi!",
+                        hasImage: false
+                    },
+                    {
+                        question: "Jaki kolor powstanie gdy zmieszasz żółty i niebieski?",
+                        answers: ["Czerwony", "Zielony", "Pomarańczowy", "Fioletowy"],
+                        correct: 1,
+                        explanation: "🎨 Żółty + Niebieski = Zielony!",
+                        hasImage: false
+                    }
+                ]
+            },
+            3: {
+                name: "Poziom 3 - Zwierzęta",
+                emoji: "🦁",
+                introDescription: "🦁 Czy znasz zwierzęta?",
+                questions: [
+                    {
+                        question: "Które zwierzę mówi 'Miau'?",
+                        answers: ["Pies", "Kotek", "Krowa", "Kaczka"],
+                        correct: 1,
+                        explanation: "🐱 Kotki mówią MIAU!",
+                        hasImage: false
+                    },
+                    {
+                        question: "Co je żyrafa?",
+                        answers: ["Mięso", "Ryby", "Liście", "Owoce"],
+                        correct: 2,
+                        explanation: "🦒 Żyrafy jedzą liście z wysokich drzew dzięki długiej szyi!",
+                        hasImage: false
+                    },
+                    {
+                        question: "Które zwierzę ma trąbę?",
+                        answers: ["Lew", "Słoń", "Zebra", "Małpa"],
+                        correct: 1,
+                        explanation: "🐘 Słonie używają trąby do picia i łapania jedzenia!",
+                        hasImage: false
+                    },
+                    {
+                        question: "Ile nóg ma pająk?",
+                        answers: ["6", "8", "10", "4"],
+                        correct: 1,
+                        explanation: "🕷️ Pająk ma 8 nóg - więcej niż owady!",
+                        hasImage: false
+                    },
+                    {
+                        question: "Które zwierzę umie latać?",
+                        answers: ["Królik", "Ptak", "Ryba", "Mysz"],
+                        correct: 1,
+                        explanation: "🐦 Ptaki mają skrzydła i potrafią latać!",
+                        hasImage: false
+                    }
+                ]
+            },
+            4: {
+                name: "Poziom 4 - Muzyka",
+                emoji: "🎵",
+                introDescription: "🎵 Czas na muzykę!",
+                questions: [
+                    {
+                        question: "W którą grupę należy gitara?",
+                        answers: ["Dęte", "Strunowe", "Perkusyjne", "Elektroniczne"],
+                        correct: 1,
+                        explanation: "🎸 Gitara ma struny, więc to instrument strunowy!",
+                        hasImage: false
+                    },
+                    {
+                        question: "Czym grasz na bębnie?",
+                        answers: ["Palcami", "Pałeczkami", "Smyczkiem", "Dmuchasz"],
+                        correct: 1,
+                        explanation: "🥁 Na bębnie grasz uderzając pałeczkami!",
+                        hasImage: false
+                    },
+                    {
+                        question: "Które instrumenty należą do grupy dętych?",
+                        answers: ["Gitara i skrzypce", "Flet i trąbka", "Bęben i talerze", "Pianino"],
+                        correct: 1,
+                        explanation: "🎺 Instrumenty dęte to te, w które dmuchasz!",
+                        hasImage: false
+                    },
+                    {
+                        question: "Co robisz żeby zagrać na skrzypcach?",
+                        answers: ["Dmuchasz", "Uderzasz", "Używasz smyczka", "Szarpiesz palcami"],
+                        correct: 2,
+                        explanation: "🎻 Na skrzypcach grasz prowadząc smyczkiem po strunach!",
+                        hasImage: false
+                    },
+                    {
+                        question: "Które z tych NIE jest instrumentem perkusyjnym?",
+                        answers: ["Bęben", "Tamburyn", "Flet", "Talerze"],
+                        correct: 2,
+                        explanation: "🎶 Flet to instrument dęty - dmuchasz do niego!",
                         hasImage: false
                     }
                 ]
@@ -1221,6 +1407,18 @@
             answersContainer.innerHTML = '';
             updateProgressText();
 
+            // Dodaj progress bar przed pytaniem
+            const existingProgressBar = document.querySelector('.question-progress-bar');
+            if (existingProgressBar) {
+                existingProgressBar.remove();
+            }
+            const progressHTML = `
+                <div class="question-progress-bar">
+                    <div class="question-progress-fill" style="width: ${((currentQuestionIndex + 1) / questions.length) * 100}%"></div>
+                </div>
+            `;
+            questionText.insertAdjacentHTML('beforebegin', progressHTML);
+
             // Obsługa obrazka
             if (data.hasImage && currentGameLevel === 0 && currentQuestionIndex === 0) {
                 imageScene.innerHTML = '<img src="image_50043c.jpg" alt="Ilustracja do zadania" class="responsive-image">';
@@ -1367,18 +1565,23 @@
             const allBtns = document.querySelectorAll('.answer-btn');
             allBtns.forEach(b => b.disabled = true);
 
+            // Pobierz wyjaśnienie z aktualnego pytania
+            const currentLevel = gameLevels[currentGameLevel];
+            const data = currentLevel.questions[currentQuestionIndex];
+            const explanation = data.explanation || "";
+
             if (selectedIndex === correctIndex) {
                 btnElement.classList.add('correct');
                 addStar(); // Dodaj gwiazdkę za poprawną odpowiedź!
-                playSound('correct');
-                vibrate(200); // Wibracja sukcesu
-                setTimeout(() => showModal(true), 700);
+                playSound('correct'); // Dźwięk przy poprawnej
+                vibrate(200); // Delikatna wibracja
+                setTimeout(() => showModal(true, explanation), 700);
             } else {
                 btnElement.classList.add('wrong');
                 allBtns[correctIndex].classList.add('correct');
-                playSound('wrong');
-                vibrate([100, 50, 100]); // Wibracja błędu (krótka-przerwa-krótka)
-                setTimeout(() => showModal(false), 1000);
+                // BEZ DŹWIĘKU przy błędnej odpowiedzi!
+                vibrate([100, 50, 100, 50, 100]); // Silniejsza, dłuższa wibracja
+                setTimeout(() => showModal(false, explanation), 1000);
             }
         }
 
@@ -1397,18 +1600,18 @@
             "💡 Spróbuj ponownie!"
         ];
 
-        function showModal(isSuccess) {
+        function showModal(isSuccess, explanation = "") {
             modal.classList.remove('hidden');
             if (isSuccess) {
                 const msg = successMessages[Math.floor(Math.random() * successMessages.length)];
                 modalTitle.textContent = msg;
                 modalTitle.style.color = "#4CAF50";
-                modalMsg.textContent = "";
+                modalMsg.innerHTML = explanation; // Pokaż wyjaśnienie
             } else {
                 const msg = failMessages[Math.floor(Math.random() * failMessages.length)];
                 modalTitle.textContent = msg;
                 modalTitle.style.color = "#FF9800";
-                modalMsg.textContent = "";
+                modalMsg.innerHTML = explanation; // Pokaż wyjaśnienie
             }
         }
 
@@ -1417,6 +1620,14 @@
             currentQuestionIndex++;
             saveProgress();
             loadQuestion();
+        }
+
+        // Funkcja powrotu do menu głównego
+        window.showMainMenu = function() {
+            if (confirm('Czy na pewno chcesz wrócić do menu? (Postęp zostanie zapisany)')) {
+                saveProgress();
+                location.reload();
+            }
         }
 
     </script>
