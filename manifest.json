@@ -1,6 +1,6 @@
 {
-  "name": "My 2Go 2Rozumienie",
-  "short_name": "My2Go2R",
+  "name": "Muzgozrozumienie",
+  "short_name": "Muzgozrozumienie",
   "description": "Gra edukacyjna dla dzieci - zagadki logiczne",
   "start_url": "/",
   "display": "standalone",

@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <title>My 2Go 2Rozumienie</title>
+    <title>Muzgozrozumienie</title>
     <meta name="description" content="Gra edukacyjna dla dzieci - zagadki logiczne">
 
     <!-- PWA Manifest -->
@@ -13,7 +13,7 @@
     <meta name="theme-color" content="#4FC3F7">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <meta name="apple-mobile-web-app-title" content="My2Go2R">
+    <meta name="apple-mobile-web-app-title" content="Muzgozrozumienie">
     <meta name="mobile-web-app-capable" content="yes">
 
     <!-- Apple Touch Icons -->
@@ -92,49 +92,58 @@
             pointer-events: none;
         }
 
-        /* Kolorowy Tytuł */
+        /* Kolorowy Tytuł - DUŻY NA CAŁY EKRAN */
         h1.title {
-            font-size: 3.5rem;
+            font-size: 5rem;
             text-align: center;
-            margin-bottom: 30px;
-            margin-top: 0;
-            line-height: 1.2;
+            margin: 0;
+            line-height: 1.1;
             text-shadow: 3px 3px 0px rgba(0,0,0,0.1);
             position: absolute;
-            top: 10%;
-            width: 100%;
-            padding: 0 10px;
-            box-sizing: border-box;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 90%;
             font-weight: bold;
+            letter-spacing: 0.05em;
+        }
+
+        /* Linie tekstu */
+        .title-line {
+            display: block;
+            margin: 5px 0;
         }
 
         /* Kolory liter - zgodnie z rysunkiem */
+        /* Linia 1: MUZGO */
         .letter:nth-child(1) { color: #4CAF50; }  /* M - zielony */
-        .letter:nth-child(2) { color: #FF9800; }  /* y - pomarańczowy */
-        .letter:nth-child(3) { color: #333; }     /* spacja */
-        .letter:nth-child(4) { color: #E91E63; }  /* 2 - różowy */
-        .letter:nth-child(5) { color: #9C27B0; }  /* G - fioletowy */
-        .letter:nth-child(6) { color: #2196F3; }  /* o - niebieski */
-        .letter:nth-child(7) { color: #333; }     /* spacja */
-        .letter:nth-child(8) { color: #2196F3; }  /* 2 - niebieski */
-        .letter:nth-child(9) { color: #9C27B0; }  /* R - fioletowy */
-        .letter:nth-child(10) { color: #E91E63; } /* o - różowy */
-        .letter:nth-child(11) { color: #FFEB3B; text-shadow: 1px 1px 0 #AAA; } /* z - żółty */
-        .letter:nth-child(12) { color: #FF9800; } /* u - pomarańczowy */
-        .letter:nth-child(13) { color: #4CAF50; } /* m - zielony */
-        .letter:nth-child(14) { color: #F44336; } /* i - czerwony */
-        .letter:nth-child(15) { color: #FFEB3B; text-shadow: 1px 1px 0 #AAA; } /* e - żółty */
-        .letter:nth-child(16) { color: #2196F3; } /* n - niebieski */
-        .letter:nth-child(17) { color: #9C27B0; } /* i - fioletowy */
-        .letter:nth-child(18) { color: #E91E63; } /* e - różowy */
+        .letter:nth-child(2) { color: #FF9800; }  /* U - pomarańczowy */
+        .letter:nth-child(3) { color: #E91E63; }  /* Z - różowy */
+        .letter:nth-child(4) { color: #FFEB3B; text-shadow: 2px 2px 0 #999; } /* G - żółty */
+        .letter:nth-child(5) { color: #9C27B0; }  /* O - fioletowy */
+
+        /* Linia 2: ZROZUMIENI */
+        .letter:nth-child(6) { color: #2196F3; }  /* Z - niebieski */
+        .letter:nth-child(7) { color: #F44336; }  /* R - czerwony */
+        .letter:nth-child(8) { color: #9C27B0; }  /* O - fioletowy */
+        .letter:nth-child(9) { color: #E91E63; }  /* Z - różowy */
+        .letter:nth-child(10) { color: #FF9800; } /* U - pomarańczowy */
+        .letter:nth-child(11) { color: #4CAF50; } /* M - zielony */
+        .letter:nth-child(12) { color: #2196F3; } /* I - niebieski */
+        .letter:nth-child(13) { color: #FFEB3B; text-shadow: 2px 2px 0 #999; } /* E - żółty */
+        .letter:nth-child(14) { color: #9C27B0; } /* N - fioletowy */
+        .letter:nth-child(15) { color: #FF9800; } /* I - pomarańczowy */
+
+        /* Linia 3: E */
+        .letter:nth-child(16) { color: #F44336; } /* E - czerwony */
 
         /* Przycisk Play - Ikona */
         #play-btn {
             background-color: var(--btn-inactive);
             color: white;
             border: none;
-            width: 100px;
-            height: 100px;
+            width: 120px;
+            height: 120px;
             border-radius: 50%;
             cursor: not-allowed;
             transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
@@ -142,8 +151,8 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            margin-bottom: 40px;
-            position: relative;
+            position: absolute;
+            bottom: 25%;
             z-index: 10;
         }
 
@@ -179,7 +188,7 @@
             flex-direction: column;
             align-items: center;
             position: absolute;
-            bottom: 15%;
+            bottom: 8%;
         }
 
         .loader-container {
@@ -367,18 +376,18 @@
         /* --- MEDIA QUERIES (DODATKOWA RESPONSYWNOŚĆ DLA MAŁYCH EKRANÓW) --- */
         @media (max-width: 480px) {
             h1.title {
-                font-size: 2.5rem; /* Mniejszy tytuł na telefonie */
-                top: 5%;
+                font-size: 3rem; /* Mniejszy tytuł na telefonie */
             }
 
             #play-btn {
-                width: 80px;
-                height: 80px;
+                width: 90px;
+                height: 90px;
+                bottom: 20%;
             }
 
             #play-btn svg {
-                width: 40px;
-                height: 40px;
+                width: 45px;
+                height: 45px;
                 margin-left: 6px;
             }
 
@@ -386,6 +395,10 @@
                 width: 45px;
                 height: 45px;
                 margin-top: 15px;
+            }
+
+            .loader-wrapper {
+                bottom: 5%;
             }
 
             /* Karta gry szersza na małym ekranie */
@@ -407,14 +420,13 @@
         /* Landscape mode - smaller devices */
         @media (max-height: 600px) and (orientation: landscape) {
             h1.title {
-                font-size: 2rem;
-                top: 2%;
+                font-size: 2.5rem;
             }
 
             #play-btn {
                 width: 60px;
                 height: 60px;
-                margin-bottom: 20px;
+                bottom: 15%;
             }
 
             #play-btn svg {
@@ -423,7 +435,7 @@
             }
 
             .loader-wrapper {
-                bottom: 10%;
+                bottom: 3%;
             }
 
             .game-card {
@@ -445,7 +457,12 @@
         /* Very small screens */
         @media (max-width: 360px) {
             h1.title {
-                font-size: 2rem;
+                font-size: 2.3rem;
+            }
+
+            #play-btn {
+                width: 70px;
+                height: 70px;
             }
 
             .riddle-text {
@@ -579,7 +596,7 @@
         }
 
         /* --- LOGIKA UI (Splash Screen) --- */
-        const titleText = "My 2Go 2Rozumienie";
+        const titleLines = ["MUZGO", "ZROZUMIENI", "E"];
         const titleContainer = document.getElementById('colorful-title');
         const loaderBar = document.getElementById('loader-bar');
         const heartIcon = document.getElementById('heart-icon');
@@ -587,14 +604,21 @@
         const splashScreen = document.getElementById('splash-screen');
         const gameScreen = document.getElementById('game-screen');
 
-        // Generowanie kolorowego napisu
+        // Generowanie kolorowego napisu w trzech liniach
         titleContainer.innerHTML = '';
-        for (let char of titleText) {
-            const span = document.createElement('span');
-            span.textContent = char;
-            span.classList.add('letter');
-            titleContainer.appendChild(span);
-        }
+        titleLines.forEach((line, lineIndex) => {
+            const lineSpan = document.createElement('span');
+            lineSpan.classList.add('title-line');
+
+            for (let char of line) {
+                const span = document.createElement('span');
+                span.textContent = char;
+                span.classList.add('letter');
+                lineSpan.appendChild(span);
+            }
+
+            titleContainer.appendChild(lineSpan);
+        });
 
         // Symulacja ładowania
         let progress = 0;
