@@ -293,13 +293,14 @@
 
         .game-card {
             background: linear-gradient(135deg, #FFFFFF 0%, #F0F9FF 100%);
-            width: 98%;
+            width: 99%;
             max-width: none; /* Pełna szerokość ekranu */
-            max-height: 95vh; /* Prawie cały ekran w pionie */
+            max-height: 98vh; /* Prawie cały ekran w pionie */
             overflow-y: auto;
-            border-radius: 20px;
-            padding: 20px 15px;
-            margin-top: 60px;
+            border-radius: 15px;
+            padding: 15px 10px;
+            margin-top: 5px;
+            margin-bottom: 5px;
             box-shadow: 0 15px 35px rgba(0,0,0,0.15), 0 5px 15px rgba(33, 150, 243, 0.2);
             text-align: center;
             border: 5px solid transparent;
@@ -326,12 +327,12 @@
         .level-badge {
             background: linear-gradient(135deg, #FF6B6B, #FF8E53);
             color: white;
-            padding: 10px 25px;
+            padding: 8px 20px;
             border-radius: 25px;
             display: inline-block;
-            margin-bottom: 15px;
+            margin-bottom: 8px;
             font-weight: bold;
-            font-size: 1.1rem;
+            font-size: 1.05rem;
             box-shadow: 0 4px 10px rgba(255, 107, 107, 0.3);
             border: 3px solid #FF4757;
             position: relative;
@@ -345,8 +346,8 @@
         .riddle-text {
             font-size: 1.4rem;
             color: #2C3E50;
-            margin-bottom: 25px;
-            line-height: 1.5;
+            margin-bottom: 15px;
+            line-height: 1.4;
             font-weight: bold;
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             -webkit-background-clip: text;
@@ -367,8 +368,8 @@
             width: 100%;
             display: flex;
             flex-direction: column;
-            gap: 10px;
-            margin-bottom: 20px;
+            gap: 8px;
+            margin-bottom: 10px;
         }
 
         .answer-btn {
@@ -466,7 +467,8 @@
             width: 100%;
             height: auto; /* Wysokość automatyczna */
             min-height: 100px; /* Minimalna wysokość żeby nie skakało */
-            margin-top: 10px;
+            margin-top: 5px;
+            margin-bottom: 5px;
             border-radius: 10px;
             overflow: hidden;
             display: flex;
@@ -478,7 +480,7 @@
         .responsive-image {
             width: 100%;
             height: auto;
-            max-height: 350px; /* Ograniczenie wysokości na dużych ekranach */
+            max-height: 600px; /* Zwiększony rozmiar dla obrazków "znajdź różnice" */
             object-fit: contain; /* Zachowanie proporcji */
             display: block;
             border-radius: 10px;
