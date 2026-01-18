@@ -293,13 +293,13 @@
 
         .game-card {
             background: linear-gradient(135deg, #FFFFFF 0%, #F0F9FF 100%);
-            width: 96%;
-            max-width: 900px; /* Maksymalna szerokość na dużych ekranach */
-            max-height: 90vh;
+            width: 98%;
+            max-width: none; /* Pełna szerokość ekranu */
+            max-height: 95vh; /* Prawie cały ekran w pionie */
             overflow-y: auto;
-            border-radius: 30px;
-            padding: 30px;
-            margin-top: 70px;
+            border-radius: 20px;
+            padding: 20px 15px;
+            margin-top: 60px;
             box-shadow: 0 15px 35px rgba(0,0,0,0.15), 0 5px 15px rgba(33, 150, 243, 0.2);
             text-align: center;
             border: 5px solid transparent;
@@ -923,36 +923,6 @@
             transition: width 0.5s cubic-bezier(0.4, 0.0, 0.2, 1);
         }
 
-        /* Przycisk Menu */
-        .menu-btn {
-            position: absolute;
-            top: 15px;
-            right: 15px;
-            background: rgba(255, 255, 255, 0.9);
-            border: 3px solid #2196F3;
-            border-radius: 50%;
-            width: 50px;
-            height: 50px;
-            font-size: 1.5rem;
-            cursor: pointer;
-            z-index: 30;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
-            transition: all 0.3s;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .menu-btn:hover {
-            transform: scale(1.1);
-            background: #2196F3;
-            color: white;
-        }
-
-        .menu-btn:active {
-            transform: scale(0.95);
-        }
-
         /* Przycisk Koniec - lewy górny róg */
         .end-btn {
             position: absolute;
@@ -1350,9 +1320,6 @@
         <div id="game-screen" class="screen hidden">
             <!-- Przycisk Koniec - lewy górny róg -->
             <button class="end-btn" onclick="endGame()" title="Zakończ grę">✕ Koniec</button>
-
-            <!-- Przycisk Menu - prawy górny róg -->
-            <button class="menu-btn" onclick="showMainMenu()" title="Menu">☰</button>
 
             <!-- Pasek Gwiazdek -->
             <div class="stars-header">
