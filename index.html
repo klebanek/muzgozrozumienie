@@ -1731,69 +1731,39 @@
                 introDescription: "🔍 Znajdź różnice w bajkowych obrazkach! Porównaj dwie sceny i znajdź co się zmieniło!",
                 questions: [
                     {
-                        question: "Bajkowy las z chatką czarownicy. Co się zmieniło?",
-                        emojiScenes: {
-                            scene1: "🌲🌲<br>🏡<br>🌲🧙‍♀️🌲",
-                            scene2: "🌲🌲<br>🏠<br>🌲🧙‍♀️🌲",
-                            scene1Desc: "🔴 Czerwony dach",
-                            scene2Desc: "🔵 Niebieski dach"
-                        },
-                        answers: ["Liczba drzew", "Kolor dachu chatki", "Pozycja czarownicy", "Nic się nie zmieniło"],
+                        question: "Bajkowy las z chatką czarownicy. Co się zmieniło między lewym a prawym obrazkiem?",
+                        answers: ["Liczba drzew", "Kolor dachu chatki", "Pozycja czarownicy", "Kolor nieba"],
                         correct: 1,
                         explanation: "🔍 Świetnie! Chatka zmieniła kolor dachu z czerwonego na niebieski!",
-                        hasEmojiScenes: true
+                        hasImage: true
                     },
                     {
-                        question: "Podwodne królestwo syrenki. Ile rozgwiazd jest na drugim obrazku?",
-                        emojiScenes: {
-                            scene1: "🧜‍♀️ 🐠<br>🪸⭐⭐⭐🪸<br>🐡 🐟",
-                            scene2: "🧜‍♀️ 🐠<br>🪸⭐⭐⭐⭐⭐🪸<br>🐡 🐟",
-                            scene1Desc: "3 rozgwiazdy",
-                            scene2Desc: "5 rozgwiazd"
-                        },
+                        question: "Podwodne królestwo syrenki. Ile rozgwiazd jest na prawym obrazku?",
                         answers: ["3 rozgwiazdy", "4 rozgwiazdy", "5 rozgwiazd", "2 rozgwiazdy"],
                         correct: 2,
-                        explanation: "⭐ Brawo! Na drugim obrazku jest 5 rozgwiazd - o dwie więcej!",
-                        hasEmojiScenes: true
+                        explanation: "⭐ Brawo! Na prawym obrazku jest 5 rozgwiazd - o dwie więcej niż na lewym!",
+                        hasImage: true
                     },
                     {
-                        question: "Zamek księżniczki. Jaki kolor ma flaga na DRUGIM obrazku?",
-                        emojiScenes: {
-                            scene1: "🚩<br>🏰<br>👸 🌹",
-                            scene2: "🏁<br>🏰<br>👸 🌹",
-                            scene1Desc: "🔴 Czerwona flaga",
-                            scene2Desc: "🏁 Różowa flaga"
-                        },
-                        answers: ["Czerwona", "Niebieska", "Żółta", "Czarno-biała (szachownica)"],
+                        question: "Zamek księżniczki. Jaki kolor ma flaga na wieży na PRAWYM obrazku?",
+                        answers: ["Czerwona (taka sama)", "Niebieska", "Żółta", "Różowa"],
                         correct: 3,
-                        explanation: "🏁 Doskonale! Flaga zmieniła się na czarno-białą szachownicę!",
-                        hasEmojiScenes: true
+                        explanation: "👑 Doskonale! Na lewym obrazku flaga jest czerwona, a na prawym - różowa!",
+                        hasImage: true
                     },
                     {
-                        question: "Magiczny ogród. Co zniknęło na drugim obrazku?",
-                        emojiScenes: {
-                            scene1: "🦋🌸🦋<br>🌺🌻🌺<br>🦋🌼🦋",
-                            scene2: "🌸<br>🌺🌻🌺<br>🌼",
-                            scene1Desc: "Motyle i kwiaty",
-                            scene2Desc: "Same kwiaty"
-                        },
-                        answers: ["Kwiaty", "Motyle", "Słońce", "Trawa"],
+                        question: "Magiczny ogród pełen kwiatów. Co zniknęło na prawym obrazku?",
+                        answers: ["Kwiaty", "Motyle", "Słońce", "Drzewa"],
                         correct: 1,
-                        explanation: "🦋 Super! Wszystkie motyle zniknęły z ogrodu!",
-                        hasEmojiScenes: true
+                        explanation: "🦋 Super! Wszystkie motyle zniknęły z prawego ogrodu!",
+                        hasImage: true
                     },
                     {
-                        question: "Leśna polanka. Jaki grzyb rośnie na DRUGIM obrazku?",
-                        emojiScenes: {
-                            scene1: "🌳 🐿️<br>🍄<br>🌿 🦔",
-                            scene2: "🌳 🐿️<br>🌰<br>🌿 🦔",
-                            scene1Desc: "🍄 Czerwony muchomor",
-                            scene2Desc: "🌰 Brązowy orzech"
-                        },
-                        answers: ["Muchomor", "Orzech (nie grzyb!)", "Borowik", "Kurka"],
+                        question: "Leśna polanka. Co rośnie pod drzewem na PRAWYM obrazku?",
+                        answers: ["Czerwony muchomor", "Brązowy borowik", "Pomarańczowa kurka", "Zielona trawa"],
                         correct: 1,
-                        explanation: "🌰 Wspaniale! Zamiast grzyba pojawił się orzech - to pułapka!",
-                        hasEmojiScenes: true
+                        explanation: "🍄 Wspaniale! Na lewym obrazku był czerwony muchomor, a na prawym brązowy borowik!",
+                        hasImage: true
                     }
                 ]
             }
@@ -2116,27 +2086,26 @@
             `;
             questionText.insertAdjacentHTML('beforebegin', progressHTML);
 
-            // Obsługa obrazka i scen emoji
-            if (data.hasEmojiScenes && data.emojiScenes) {
-                // Wyświetl sceny emoji dla zagadek "znajdź różnice"
-                imageScene.innerHTML = `
-                    <div class="emoji-scenes-container">
-                        <div class="emoji-scene">
-                            <div class="emoji-scene-title">Obrazek 1</div>
-                            <div class="emoji-scene-content">${data.emojiScenes.scene1}</div>
-                            <div style="font-size: 0.85rem; color: #666; margin-top: 8px;">${data.emojiScenes.scene1Desc}</div>
-                        </div>
-                        <div class="emoji-scene">
-                            <div class="emoji-scene-title">Obrazek 2</div>
-                            <div class="emoji-scene-content">${data.emojiScenes.scene2}</div>
-                            <div style="font-size: 0.85rem; color: #666; margin-top: 8px;">${data.emojiScenes.scene2Desc}</div>
-                        </div>
-                    </div>
-                `;
-                imageScene.style.display = 'flex';
-            } else if (data.hasImage && currentGameLevel === 0 && currentQuestionIndex === 0) {
-                imageScene.innerHTML = '<img src="image_50043c.jpg" alt="Ilustracja do zadania" class="responsive-image">';
-                imageScene.style.display = 'flex';
+            // Obsługa obrazka
+            if (data.hasImage) {
+                let imageSrc = '';
+
+                // Obrazek dla poziomu 0, pytanie 1
+                if (currentGameLevel === 0 && currentQuestionIndex === 0) {
+                    imageSrc = 'image_50043c.jpg';
+                }
+                // Obrazki dla poziomu 5 - "znajdź różnice"
+                else if (currentGameLevel === 5) {
+                    imageSrc = `p5_${currentQuestionIndex + 1}.png`;
+                }
+
+                if (imageSrc) {
+                    imageScene.innerHTML = `<img src="${imageSrc}" alt="Ilustracja do zadania" class="responsive-image">`;
+                    imageScene.style.display = 'flex';
+                } else {
+                    imageScene.innerHTML = '';
+                    imageScene.style.display = 'none';
+                }
             } else {
                 imageScene.innerHTML = '';
                 imageScene.style.display = 'none';
